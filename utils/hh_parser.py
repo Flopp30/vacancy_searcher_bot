@@ -2,12 +2,11 @@ import asyncio
 import datetime
 import json
 import math
-import urllib.parse
 
 import aiohttp
 
 from config import logging, URL, HEADERS, VACANCY_TO_SHOW_COUNT
-from utils.data_extractor import parse_vacancies
+from utils.data_extractor import extract_vacancies_info
 
 
 async def gather_data(vacancy_name: str):
@@ -18,12 +17,10 @@ async def gather_data(vacancy_name: str):
     '''
     stash = []
 
-    encoded_vacancy_name = urllib.parse.quote_plus(vacancy_name)
-
     per_page = VACANCY_TO_SHOW_COUNT if VACANCY_TO_SHOW_COUNT < 100 else 100
 
     params = {
-        "vacancy_name": encoded_vacancy_name,
+        "text": vacancy_name,
         "per_page": per_page,
         "date_from": datetime.datetime.now().strftime("%Y-%m-%d"),
     }
@@ -81,10 +78,10 @@ async def get_data_from_hh(vacancy_name: str) -> list:
     :return:
     '''
     vacancies = await gather_data(vacancy_name)
-    return await parse_vacancies(vacancies)
+    return await extract_vacancies_info(vacancies)
 
 
 if __name__ == "__main__":
-    data = asyncio.run(get_data_from_hh("java"))
+    data = asyncio.run(get_data_from_hh("Аналитик данных"))
     with open('./temp.json', 'w', encoding="utf-8") as f:
         json.dump(data, f)

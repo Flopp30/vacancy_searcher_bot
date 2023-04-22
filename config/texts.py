@@ -14,3 +14,9 @@ TEXT_SEARCH_WITHOUT_COMMAND = f"Для поиска по вакансиям пр
 TEXT_HELP = f"/search - для старта поиска по вакансиям\n" \
             f"/profile - для просмотра своего профиля и добавления резюме\n" \
             f"/help - справочная информация по командам\n"
+
+TEXT_PROFILE_GET_NAME = f"Как я могу к тебе обращаться?"
+
+TEXT_PROFILE_GET_PROF_ROLE = "Приятно познакомиться, {username}. Подскажи свою специальность"
+
+TEXT_PROFILE_GET_EXPERIENCE = "Подскажи, какой у тебя опыт работы по специальности: {prof_role}"
