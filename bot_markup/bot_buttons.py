@@ -3,6 +3,7 @@ from aiogram.types import (
     InlineKeyboardButton
 )
 
+# Paginator for vacancies
 paginator_markup = InlineKeyboardMarkup(row_width=2)
 
 btn_prev = InlineKeyboardButton(text='<<', callback_data="prev")

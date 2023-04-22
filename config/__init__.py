@@ -7,7 +7,10 @@ from config.settings import (
     PARS_KEYS
 )
 from config.texts import (
-    BOT_GREETING
+    TEXT_GREETING,
+    TEXT_VACANCY_SEARCH,
+    TEXT_SEARCH_WITHOUT_COMMAND,
+    TEXT_HELP,
 )
 
 __all__ = [
@@ -20,6 +23,8 @@ __all__ = [
     PARS_KEYS,
 
     # texts
-    BOT_GREETING,
-
+    TEXT_GREETING,
+    TEXT_VACANCY_SEARCH,
+    TEXT_SEARCH_WITHOUT_COMMAND,
+    TEXT_HELP,
 ]

@@ -1,4 +1,5 @@
 import asyncio
+import datetime
 import json
 import math
 import urllib.parse
@@ -21,10 +22,14 @@ async def gather_data(vacancy_name: str):
 
     per_page = VACANCY_TO_SHOW_COUNT if VACANCY_TO_SHOW_COUNT < 100 else 100
 
-    url = URL.format(vacancy_name=encoded_vacancy_name, per_page=per_page)
+    params = {
+        "vacancy_name": encoded_vacancy_name,
+        "per_page": per_page,
+        "date_from": datetime.datetime.now().strftime("%Y-%m-%d"),
+    }
 
     async with aiohttp.ClientSession() as session:
-        response = await session.get(url=url, headers=HEADERS)  # Send first request
+        response = await session.get(url=URL, params=params, headers=HEADERS)  # Send first request
         response_dict = json.loads(await response.text())  # Convert into dict
 
         if not response_dict['items']:  # If not items - empty response
@@ -42,7 +47,7 @@ async def gather_data(vacancy_name: str):
         for page in range(pages_count):
             task = asyncio.create_task(_get_page_data(
                 session=session,
-                url=url,
+                url=URL,
                 stash=stash,
                 page=page
             ))
