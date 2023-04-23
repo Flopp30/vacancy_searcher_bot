@@ -1,12 +1,13 @@
 import asyncio
 import datetime
 import json
+import logging
 import math
 
 import aiohttp
 
-from config import logging, URL, HEADERS, VACANCY_TO_SHOW_COUNT
-from utils.data_extractor import extract_vacancies_info
+from bot.settings import URL, HEADERS, VACANCY_TO_SHOW_COUNT
+from bot.utils.data_extractor import extract_vacancies_info
 
 
 async def gather_data(vacancy_name: str):

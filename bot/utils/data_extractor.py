@@ -1,4 +1,4 @@
-from config import PARS_KEYS
+from bot.settings import PARS_KEYS
 
 
 async def _get_value_by_key(obj: dict, path: list) -> str | int | bool | dict:

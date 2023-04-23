@@ -1,7 +1,6 @@
-import logging
 import os
 from pathlib import Path
-
+from sqlalchemy.engine.url import URL
 from dotenv import load_dotenv
 
 # Dirs
@@ -11,8 +10,22 @@ load_dotenv(BASE_DIR / ".env")
 # Keys
 TG_BOT_KEY = os.getenv("TG_BOT_KEY")
 
-# Logging
-logging.basicConfig(level=logging.INFO)
+# DB
+DB_DRIVER=os.getenv("DB_DRIVER")
+DB_HOST=os.getenv("DB_HOST")
+DB_PORT=os.getenv("DB_PORT")
+DB_NAME=os.getenv("DB_NAME")
+DB_USER=os.getenv("DB_USER")
+DB_PASSWORD=os.getenv("DB_PASSWORD")
+
+POSTGRES_URL = URL.create(
+    drivername=DB_DRIVER,
+    host=DB_HOST,
+    port=DB_PORT,
+    username=DB_USER,
+    password=DB_PASSWORD,
+    database=DB_NAME,
+)
 
 # Request
 URL = "https://api.hh.ru/vacancies/"
