@@ -40,8 +40,10 @@ async def profile_edit(callback_query: types.CallbackQuery, session_maker: sessi
         prof_role=user.professional_role,
         exp=user.grade
     )
-    await callback_query.message.answer(text=text, reply_markup=profile_choose_field_to_update_keyboard())
-
+    await callback_query.message.answer(
+        text=text,
+        reply_markup=profile_choose_field_to_update_keyboard()
+    )
 
 
 async def profile_edit_choose_field(
@@ -49,25 +51,47 @@ async def profile_edit_choose_field(
         callback_data: FieldTypeToUpdateCallBack,
         state: FSMContext,
 ):
+    '''
+    Callback handler, return message with text about choose field
+    :param callback_query:
+    :param callback_data:
+    :param state:
+    :return:
+    '''
     await state.set_state(ProfileUpdateStates.waiting_for_partial_update_data)
     await state.update_data(field=callback_data.field)
     cancel_board = cancel_keyboard()
 
     match callback_data.field:
         case "firstname":
-            await callback_query.message.answer("Пришлите своё имя", reply_markup=cancel_board)
+            await callback_query.message.answer(
+                "Пришлите своё имя",
+                reply_markup=cancel_board
+            )
 
         case "lastname":
-            await callback_query.message.answer("Пришлите свою фамилию", reply_markup=cancel_board)
+            await callback_query.message.answer(
+                "Пришлите свою фамилию",
+                reply_markup=cancel_board
+            )
 
         case "email":
-            await callback_query.message.answer("Пришлите свой email", reply_markup=cancel_board)
+            await callback_query.message.answer(
+                "Пришлите свой email",
+                reply_markup=cancel_board
+            )
 
         case "professional_role":
-            await callback_query.message.answer("Пришлите свою специальность", reply_markup=cancel_board)
+            await callback_query.message.answer(
+                "Пришлите свою специальность",
+                reply_markup=cancel_board
+            )
 
         case "grade":
-            await callback_query.message.answer("Выберите свой стаж", reply_markup=exp_type_keyboard())
+            await callback_query.message.answer(
+                "Выберите свой стаж",
+                reply_markup=exp_type_keyboard()
+            )
 
         case "cancel":
             return await start(callback_query.message)
@@ -79,12 +103,22 @@ async def profile_edit_grade(
         session_maker: sessionmaker,
         state: FSMContext,
 ):
+    '''
+    Callback handler to update profile grade
+    :param callback_query:
+    :param callback_data:
+    :param session_maker:
+    :param state:
+    :return:
+    '''
     if callback_data.grade == 'cancel':
         await callback_query.message.answer('Создание профиля отменено')
         return await start(callback_query.message)
     await update_user(
         user_id=callback_query.from_user.id,
-        fields={"grade": callback_data.grade},
+        fields={
+            "grade": callback_data.grade
+        },
         session=session_maker
     )
     await state.set_state(ProfileUpdateStates.waiting_for_next_step)
@@ -98,7 +132,13 @@ async def profile_partial_updater(
         message: types.Message,
         session_maker: sessionmaker,
         state: FSMContext):
-
+    '''
+    Handler for update choose field (not grade!)
+    :param message:
+    :param session_maker:
+    :param state:
+    :return:
+    '''
     if message.text == 'Отмена':
         await state.clear()
         return await start(message)
@@ -106,7 +146,14 @@ async def profile_partial_updater(
     field = (await state.get_data()).get('field')
     if field in ("firstname", "lastname"):
         if re.match(NAME_REG_EXP, message.text):
-            await update_user(user_id=message.from_user.id, fields={field: message.text}, session=session_maker)
+
+            await update_user(
+                user_id=message.from_user.id,
+                fields={
+                    field: message.text
+                },
+                session=session_maker
+            )
 
             await state.set_state(ProfileUpdateStates.waiting_for_next_step)
             return await message.answer(f'Данные успешно изменены. Куда дальше?',
@@ -117,7 +164,14 @@ async def profile_partial_updater(
                                         'и не должны содержать цифр. Попробуйте ещё раз')
     if field == "email":
         if re.match(EMAIL_REG_EXP, message.text):
-            await update_user(user_id=message.from_user.id, fields={field: message.text}, session=session_maker)
+
+            await update_user(
+                user_id=message.from_user.id,
+                fields={
+                    field: message.text
+                },
+                session=session_maker
+            )
 
             await state.set_state(ProfileUpdateStates.waiting_for_next_step)
             return await message.answer(
@@ -130,7 +184,13 @@ async def profile_partial_updater(
                 reply_markup=cancel_keyboard()
             )
     else:
-        await update_user(user_id=message.from_user.id, fields={field: message.text}, session=session_maker)
+        await update_user(
+            user_id=message.from_user.id,
+            fields={
+                field: message.text
+            },
+            session=session_maker
+        )
 
         await state.set_state(ProfileUpdateStates.waiting_for_next_step)
         return await message.answer(f'Данные успешно изменены. Куда дальше?', reply_markup=profile_next_step_keyboard())
@@ -142,6 +202,14 @@ async def next_step_handler(
         session_maker: sessionmaker,
         state: FSMContext,
 ):
+    '''
+    Callback handler with next step button (return to main menu or go to continue editing
+    :param callback_query:
+    :param callback_data:
+    :param session_maker:
+    :param state:
+    :return:
+    '''
     await state.clear()
     match callback_data.step:
         case 'main':

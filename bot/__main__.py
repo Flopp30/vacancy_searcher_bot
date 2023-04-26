@@ -15,7 +15,7 @@ from db import (
 from settings import TG_BOT_KEY, POSTGRES_URL
 
 
-async def main() -> None:
+async def async_main() -> None:
     # logger
     logging.basicConfig(level=logging.DEBUG)
     # init dispatcher and bot
@@ -36,8 +36,12 @@ async def main() -> None:
     await dp.start_polling(bot, session_maker=session_maker)
 
 
-if __name__ == "__main__":
+def main():
     try:
-        asyncio.run(main())
+        asyncio.run(async_main())
     except (KeyboardInterrupt, SystemExit):
         logging.debug("Bot stopped")
+
+
+if __name__ == "__main__":
+    main()

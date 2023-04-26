@@ -145,7 +145,7 @@ async def profile_create_end(
         state: FSMContext
 ):
     '''
-    End creating and editing
+    End creating
     :param callback_query:
     :param callback_data:
     :param session_maker:

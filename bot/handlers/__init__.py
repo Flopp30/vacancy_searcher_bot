@@ -2,10 +2,22 @@ from aiogram.filters import CommandStart, Command
 
 from bot.bot_messages import BOT_COMMANDS_INFO
 from bot.handlers.adv_search import vacancy_advanced_search
-from bot.handlers.profile_update import profile_edit, profile_edit_choose_field, profile_partial_updater, \
-    next_step_handler, profile_edit_grade
-from bot.structure import SearchCallBack, ProfileCallBack, ProfileCreateStates, FieldTypeToUpdateCallBack, \
-    ProfileUpdateStates, NextStepCallBack, ExpTypeCallBack
+from bot.handlers.profile_update import (
+    profile_edit,
+    profile_edit_choose_field,
+    profile_partial_updater,
+    next_step_handler,
+    profile_edit_grade
+)
+from bot.structure import (
+    SearchCallBack,
+    ProfileCallBack,
+    ProfileCreateStates,
+    FieldTypeToUpdateCallBack,
+    ProfileUpdateStates,
+    NextStepCallBack,
+    ExpTypeCallBack
+)
 from bot.handlers.profile_create import (
     profile_main,
     profile_create_firstname,
@@ -25,7 +37,7 @@ __all__ = [
     "register_user_commands",
 ]
 
-from bot.middleware import RegisterCheck
+# from bot.middleware import RegisterCheck
 
 
 def register_user_commands(router: Router) -> None:
@@ -38,11 +50,11 @@ def register_user_commands(router: Router) -> None:
     router.message.register(help_command, Command(commands=["help"]))
     router.message.register(help_func, F.text == "Помощь")
 
-    # profile
+    # profile main
     router.message.register(profile_main, Command(commands=["profile"]))
     router.message.register(profile_main, F.text == "Профиль")
 
-    # editing
+    # profile editing
     router.callback_query.register(
         profile_edit,
         ProfileCallBack.filter(),
@@ -69,7 +81,7 @@ def register_user_commands(router: Router) -> None:
         ProfileUpdateStates.waiting_for_next_step,
     )
 
-    # creating
+    # profile creating
     router.callback_query.register(
         profile_create_firstname,
         ProfileCallBack.filter(),
