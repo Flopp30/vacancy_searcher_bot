@@ -33,12 +33,12 @@
 #     experience = State()
 #
 #
-# @dp.message_handler(commands=['help'])
+# @dp.message_handler(handlers=['help'])
 # async def start(message: types.Message):
 #     await message.answer(TEXT_HELP)
 #
 #
-# @dp.message_handler(commands=['profile'])
+# @dp.message_handler(handlers=['profile'])
 # async def start(message: types.Message):
 #     await message.answer(TEXT_PROFILE_GET_NAME)
 #     await ProfileFormState.name.set()
@@ -75,12 +75,12 @@
 #         await state.reset_state()
 #
 #
-# @dp.message_handler(commands=['start'])
+# @dp.message_handler(handlers=['start'])
 # async def start(message: types.Message):
 #     await message.answer(TEXT_GREETING)
 #
 #
-# @dp.message_handler(commands=['search'])
+# @dp.message_handler(handlers=['search'])
 # async def chat(message: types.Message):
 #     await message.answer(TEXT_VACANCY_SEARCH)
 #     await ChatState.waiting_for_chat_command.set()

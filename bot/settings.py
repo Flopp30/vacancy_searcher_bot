@@ -11,12 +11,12 @@ load_dotenv(BASE_DIR / ".env")
 TG_BOT_KEY = os.getenv("TG_BOT_KEY")
 
 # DB
-DB_DRIVER=os.getenv("DB_DRIVER")
-DB_HOST=os.getenv("DB_HOST")
-DB_PORT=os.getenv("DB_PORT")
-DB_NAME=os.getenv("DB_NAME")
-DB_USER=os.getenv("DB_USER")
-DB_PASSWORD=os.getenv("DB_PASSWORD")
+DB_DRIVER = os.getenv("DB_DRIVER")
+DB_HOST = os.getenv("DB_HOST")
+DB_PORT = os.getenv("DB_PORT")
+DB_NAME = os.getenv("DB_NAME")
+DB_USER = os.getenv("DB_USER")
+DB_PASSWORD = os.getenv("DB_PASSWORD")
 
 POSTGRES_URL = URL.create(
     drivername=DB_DRIVER,
@@ -26,6 +26,10 @@ POSTGRES_URL = URL.create(
     password=DB_PASSWORD,
     database=DB_NAME,
 )
+
+EMAIL_REG_EXP = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$'
+
+NAME_REG_EXP = r'^[A-Za-zА-ЯЁа-яё]+$'
 
 # Request
 URL = "https://api.hh.ru/vacancies/"

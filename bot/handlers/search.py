@@ -2,19 +2,10 @@ import asyncio
 
 from aiogram import types
 from aiogram.fsm.context import FSMContext
-from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from bot.commands.callback_data_states import SearchCallBack
+from bot.structure.callback_data_states import SearchCallBack
+from bot.structure.keyboards import paginator_keyboard
 from bot.utils import get_data_from_hh, make_messages
-
-paginator_markup_builder = InlineKeyboardBuilder()
-
-paginator_markup_builder.button(
-    text="<<", callback_data=SearchCallBack(direction="prev")
-)
-paginator_markup_builder.button(
-    text=">>", callback_data=SearchCallBack(direction="next")
-)
 
 
 async def vacancy_basic_search(message: types.Message, state: FSMContext):
@@ -23,7 +14,7 @@ async def vacancy_basic_search(message: types.Message, state: FSMContext):
     if messages:
         await message.answer(
             messages[0],
-            reply_markup=paginator_markup_builder.as_markup()
+            reply_markup=paginator_keyboard()
         )
     else:
         await message.answer(

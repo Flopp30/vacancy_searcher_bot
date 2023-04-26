@@ -2,7 +2,8 @@ import asyncio
 
 from aiogram import types
 from aiogram.fsm.context import FSMContext
-from bot.commands.search import paginator_markup_builder
+
+from bot.structure.keyboards import paginator_keyboard
 from bot.utils import get_data_from_hh, make_messages
 
 
@@ -12,7 +13,7 @@ async def vacancy_advanced_search(message: types.Message, state: FSMContext):
     if messages:
         await message.answer(
             messages[0],
-            reply_markup=paginator_markup_builder.as_markup()
+            reply_markup=paginator_keyboard()
         )
     else:
         await message.answer(
