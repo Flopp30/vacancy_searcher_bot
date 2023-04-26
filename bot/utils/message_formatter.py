@@ -1,3 +1,7 @@
+"""
+Message formatter.
+Convert dicts to message for bot answer
+"""
 from datetime import datetime
 import locale
 

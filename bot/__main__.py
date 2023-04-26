@@ -1,3 +1,6 @@
+"""
+Main
+"""
 import asyncio
 import logging
 

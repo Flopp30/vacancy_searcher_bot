@@ -8,7 +8,9 @@ from bot.db.user import (
     get_user,
     is_user_exist,
     update_user,
-    UserFieldsToUpdate
+    UserFieldsToUpdate,
+    get_hh_exp,
+    get_humanize_exp,
 )
 
 __all__ = [
@@ -21,8 +23,9 @@ __all__ = [
     "UserFieldsToUpdate",
     "create_user",
     "get_user",
-    'is_user_exist',
+    "is_user_exist",
     "update_user",
-    'user_object_has_attr',
-
+    "user_object_has_attr",
+    "get_hh_exp",
+    "get_humanize_exp",
 ]

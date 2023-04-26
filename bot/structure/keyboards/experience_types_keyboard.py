@@ -1,3 +1,6 @@
+"""
+Experience keyboard
+"""
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
@@ -6,6 +9,10 @@ from bot.structure.callback_data_states import ExpTypeCallBack
 
 
 def exp_type_keyboard() -> InlineKeyboardMarkup:
+    """
+    exp type keyboard builder
+    :return:
+    """
     builder = InlineKeyboardBuilder()
 
     builder.button(

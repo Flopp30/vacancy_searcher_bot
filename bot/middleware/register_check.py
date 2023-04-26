@@ -1,3 +1,6 @@
+"""
+Сейчас не используются. Как задел на последующий функционал с регистрацией, мб оплатой и пр
+"""
 from typing import Callable, Dict, Any, Awaitable
 
 from aiogram import BaseMiddleware
@@ -19,10 +22,10 @@ class RegisterCheck(BaseMiddleware):
         if not await is_user_exist(user_id=event.from_user.id, session=session_maker):
             await create_user(
                 user_id=event.from_user.id,
-                firstname='Artem',
-                professional_role="Python dev",
-                grade=GradeTypes.MIDDLE,
-                email="pospeev.artem@icloud.com",
+                firstname='--',
+                professional_role="Test",
+                grade=GradeTypes.TRAINEE,
+                email="test@gmail.com",
                 session=session_maker,
             )
 

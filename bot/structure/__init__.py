@@ -1,6 +1,15 @@
-from bot.structure.callback_data_states import SearchCallBack, ProfileCallBack, ExpTypeCallBack, \
-    FieldTypeToUpdateCallBack, NextStepCallBack
-from bot.structure.fsm_groups import ProfileCreateStates, ProfileUpdateStates
+from bot.structure.callback_data_states import (
+    SearchCallBack,
+    ProfileCallBack,
+    ExpTypeCallBack,
+    FieldTypeToUpdateCallBack,
+    NextStepCallBack
+)
+from bot.structure.fsm_groups import (
+    ProfileCreateStates,
+    ProfileUpdateStates,
+    AdvSearchStates
+)
 
 __all__ = [
     "SearchCallBack",
@@ -10,4 +19,5 @@ __all__ = [
     "FieldTypeToUpdateCallBack",
     "ProfileUpdateStates",
     "NextStepCallBack",
+    "AdvSearchStates",
 ]

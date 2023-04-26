@@ -1,3 +1,6 @@
+"""
+Paginator keyboard
+"""
 from aiogram.types import InlineKeyboardMarkup
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
@@ -5,6 +8,10 @@ from bot.structure.callback_data_states import SearchCallBack
 
 
 def paginator_keyboard() -> InlineKeyboardMarkup:
+    """
+    paginator keyboard builder
+    :return:
+    """
     builder = InlineKeyboardBuilder()
 
     builder.button(

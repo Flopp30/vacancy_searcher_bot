@@ -1,6 +1,9 @@
+"""
+start handler
+"""
 from aiogram import types
 
-from bot.bot_messages import TEXT_GREETING
+from bot.text_for_messages import TEXT_GREETING
 from bot.structure.keyboards import main_menu
 
 
