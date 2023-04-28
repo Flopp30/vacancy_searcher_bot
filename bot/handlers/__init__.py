@@ -56,9 +56,10 @@ __all__ = [
 def register_user_commands(router: Router) -> None:
     """
     Register user commands
-    :param router: 
-    :return: 
+    :param router:
+    :return:
     """
+
     # middleware
     # router.message.middleware(RegisterCheck())
     # router.callback_query.middleware(RegisterCheck())

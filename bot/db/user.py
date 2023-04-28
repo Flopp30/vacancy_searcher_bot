@@ -101,8 +101,8 @@ class User(BaseModel):
 
     professional_role = Column(VARCHAR(32), nullable=False)
     grade = Column(Enum(*(
-        type.value for type in GradeTypes), name="grades"
-                        ), nullable=False)
+        type.value for type in GradeTypes
+    ), name="grades"), nullable=False)
 
     created_at = Column(DATE, default=datetime.datetime.now())
     updated_at = Column(DATE, onupdate=datetime.datetime.now())
@@ -121,22 +121,24 @@ class User(BaseModel):
     def validate_email(self, key, address):
         """
         Email db validator
-        :param key: 
-        :param address: 
-        :return: 
+        :param key:
+        :param address:
+        :return:
         """
+
         if re.match(EMAIL_REG_EXP, address):
             return address
         raise ValueError
 
     @validates("firstname", "lastname")
-    def validate_email(self, key, name):
+    def validate_name(self, key, name):
         """
         Firstname and lastname db validator
-        :param key: 
-        :param name: 
-        :return: 
+        :param name:
+        :param key:
+        :return:
         """
+
         if re.match(NAME_REG_EXP, name):
             return name
         raise ValueError
@@ -147,9 +149,10 @@ class User(BaseModel):
 async def user_object_has_attr(item) -> bool:
     """
     return fields in User model
-    :param item: 
-    :return: 
+    :param item:
+    :return:
     """
+
     return item in User.__table__.columns.keys()
 
 
@@ -166,6 +169,7 @@ async def get_user(
     :param session:
     :return:
     """
+
     async with session() as session:
         return (await session.execute(select(User)
                                       .where(User.user_id == user_id))).one_or_none()[0]
@@ -181,6 +185,7 @@ async def is_user_exist(
     :param session:
     :return:
     """
+
     async with session() as session:
         sql_res = await session.execute(select(User).where(User.user_id == user_id))
         return bool(sql_res.one_or_none())
@@ -206,6 +211,7 @@ async def create_user(
     :param session:
     :return:
     """
+
     async with session() as session:
         async with session.begin():
             user_args = {
@@ -233,6 +239,7 @@ async def update_user(
     :param session:
     :return:
     """
+
     async with session() as session_:
         async with session_.begin():
             user = await get_user(user_id, session)

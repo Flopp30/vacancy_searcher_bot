@@ -30,7 +30,7 @@ async def extract_vacancies_info(vacancies: list) -> list:
     """
     parsed_vacancies = []
     parsed_vacancy = {}
-    
+
     for vacancy in vacancies:
 
         for name, path in PARS_KEYS.items():

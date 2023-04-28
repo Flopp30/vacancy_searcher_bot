@@ -178,5 +178,5 @@ async def profile_create_end(
     }
     await create_user(session=session_maker, **user_args)
     await state.clear()
-    await callback_query.message.answer(text=f"Спасибо, данные успешно сохранены")
+    await callback_query.message.answer(text="Спасибо, данные успешно сохранены")
     await start(callback_query.message)
