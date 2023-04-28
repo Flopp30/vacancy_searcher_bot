@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+    bot:
+        build:
+            context: .
+        env_file:
+            - .env
+        depends_on:
+            - postgres_db
+        volumes:
+            - .:/app
+        networks:
+            - tg-bot-net
+    postgres_db:
+        image: postgres:14.5-alpine
+        environment:
+            POSTGRES_PASSWORD: password
+            POSTGRES_USER: admin
+            POSTGRES_DB: ja_bot
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        ports:
+            - 5432:5432
+        network:
+            - tg-bot-net
+
+volumes:
+    postgres_data:
+network:
+    tg-bot-net:
