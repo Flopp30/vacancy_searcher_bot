@@ -2,6 +2,7 @@
 Advanced search
 """
 import asyncio
+import logging
 
 from aiogram import types
 from aiogram.fsm.context import FSMContext
@@ -85,8 +86,9 @@ async def adv_search_show_vacancies(
         'grade': data.get('grade'),
     }
     await state.clear()
+    logging.info('Отправлены запросы к hh')
     vacancies = await asyncio.create_task(get_data_from_hh(**search_args))
-
+    logging.info('Получены овтеты от hh')
     messages = await asyncio.create_task(make_messages(vacancies))
 
     if messages:
