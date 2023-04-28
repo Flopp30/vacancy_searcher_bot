@@ -8,14 +8,14 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import BotCommand
 
-from handlers import register_user_commands, BOT_COMMANDS_INFO
-from db import (
+from bot.handlers import register_user_commands, BOT_COMMANDS_INFO
+from bot.db import (
     create_async_engine,
     proceed_schemas,
     get_session_maker,
     BaseModel,
 )
-from settings import TG_BOT_KEY, POSTGRES_URL
+from bot.settings import TG_BOT_KEY, POSTGRES_URL
 
 
 async def async_main() -> None:

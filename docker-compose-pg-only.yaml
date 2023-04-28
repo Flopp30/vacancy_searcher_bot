@@ -10,16 +10,5 @@ services:
             - postgres_data:/var/lib/postgresql/data
         ports:
             - "5432:5432"
-    bot:
-        build: .
-        command: sh -c "python3 -m bot"
-        env_file:
-            - ./.env
-        depends_on:
-            - postgres_db
-        volumes:
-            - .:/app
-        restart: always
-
 volumes:
     postgres_data:
