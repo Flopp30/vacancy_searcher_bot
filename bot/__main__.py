@@ -19,9 +19,7 @@ from bot.settings import TG_BOT_KEY, POSTGRES_URL
 
 
 async def async_main() -> None:
-    # logger
-    logging.basicConfig(level=logging.INFO)
-    logging.basicConfig(filename='log.log', level=logging.DEBUG, format='%(asctime)s %(levelname)s %(message)s')
+
     # init dispatcher and bot
     storage = MemoryStorage()
     dp = Dispatcher(storage=storage)

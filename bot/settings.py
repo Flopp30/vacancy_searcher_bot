@@ -35,7 +35,6 @@ EMAIL_REG_EXP = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
 
 NAME_REG_EXP = r"^[A-Za-zА-ЯЁа-яё]+$"
 
-NUMBER_IS_LESS_31_REG_EXP = "^([1-2]?[0-9]|30)$"
 
 # Request
 URL = "https://api.hh.ru/vacancies/"

@@ -44,7 +44,6 @@ async def gather_data(
 
     if grade:
         params["experience"] = grade
-    logging.info('Отправлены первый запрос')
     async with aiohttp.ClientSession() as session:
         response = await session.get(url=URL, params=params, headers=HEADERS)  # Send first request
         response_dict = json.loads(await response.text())  # Convert into dict
