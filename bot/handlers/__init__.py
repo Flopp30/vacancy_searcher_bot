@@ -2,11 +2,13 @@
 Register handlers
 """
 from aiogram import Router, F
+from aiogram.enums import ContentType
 from aiogram.filters import CommandStart, Command
 
 from bot.handlers.help import help_command, help_func
 from bot.handlers.profile import profile
 from bot.handlers.start import start
+from bot.handlers.web_app_data import web_app_data_receive
 from bot.middleware import RegisterCheck
 from bot.text_for_messages import BOT_COMMANDS_INFO
 
@@ -36,3 +38,6 @@ def register_user_commands(router: Router) -> None:
     # profile
     router.message.register(profile, Command(commands=["profile"]))
     router.message.register(profile, F.text.capitalize() == "Профиль")
+
+    # web app
+    router.message.register(web_app_data_receive, F.content_type.in_(ContentType.WEB_APP_DATA, ))

@@ -48,7 +48,10 @@ async def get_object(
     """
 
     async with session() as session:
-        return (await session.execute(select(object_).where(object_.id == id_))).one_or_none()[0]
+        db_response = (await session.execute(select(object_).where(object_.id == id_))).one_or_none()
+        if db_response:
+            return db_response[0]
+        return None
 
 
 async def is_object_exist(
@@ -65,8 +68,8 @@ async def is_object_exist(
     """
 
     async with session() as session:
-        sql_res = await session.execute(select(object_).where(object_.id == id_))
-        return bool(sql_res.one_or_none())
+        db_response = await session.execute(select(object_).where(object_.id == id_))
+        return bool(db_response.one_or_none())
 
 
 async def update_object(

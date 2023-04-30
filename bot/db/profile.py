@@ -1,11 +1,13 @@
 import enum
-import re
 
-from sqlalchemy import Column, BigInteger, Enum, VARCHAR, String, text, ForeignKey, Integer, Boolean
+from sqlalchemy import Column, BigInteger, Enum, VARCHAR, ForeignKey, Integer, Boolean, select
 from sqlalchemy.orm import relationship, validates
 
 from bot.db import CustomBaseModel
-from bot.settings import EMAIL_REG_EXP, NAME_REG_EXP
+
+
+# import re
+# from bot.settings import EMAIL_REG_EXP, NAME_REG_EX
 
 
 class GradeTypes(enum.Enum):
@@ -23,13 +25,13 @@ class GradeTypes(enum.Enum):
 
 
 class WorkTypes(enum.Enum):
-    '''
+    """
     Work types
-    '''
+    """
 
-    REMOTE = 'remote'
-    PART_TIME = 'part time'
-    FULL_TIME = 'full time'
+    REMOTE = "remote"
+    PART_TIME = "part-time"
+    FULL_TIME = "full-time"
 
     @classmethod
     def choices(cls):
@@ -47,11 +49,11 @@ class Profile(
     firstname = Column(VARCHAR(32))
     lastname = Column(VARCHAR(32))
 
-    email = Column(
-        String(255),
-        unique=True,
-        server_default=text("''"),
-    )
+    # email = Column(
+    #     String(255),
+    #     unique=True,
+    #     server_default=text("''"),
+    # )
 
     professional_role = Column(VARCHAR(32))
 
@@ -61,7 +63,7 @@ class Profile(
 
     work_type = Column(Enum(*(
         work_type.value for work_type in WorkTypes
-    ), name="work type"))
+    ), name="work_type"))
 
     region = Column(VARCHAR(32))
 
@@ -74,28 +76,46 @@ class Profile(
     user_id = Column(BigInteger, ForeignKey('users.id'), nullable=False)
     user = relationship('User', uselist=False, back_populates='profile')
 
-    @validates("email")
-    def validate_email(self, key, address):
-        """
-        Email db validator
-        :param key:
-        :param address:
-        :return:
-        """
+    # @validates("email")
+    # def validate_email(self, key, address):
+    #     """
+    #     Email db validator
+    #     :param key:
+    #     :param address:
+    #     :return:
+    #     """
+    #
+    #     if re.match(EMAIL_REG_EXP, address):
+    #         return address
+    #     raise ValueError
 
-        if re.match(EMAIL_REG_EXP, address):
-            return address
-        raise ValueError
-
-    @validates("firstname", "lastname")
-    def validate_name(self, key, name):
+    # @validates("firstname", "lastname")
+    # def validate_name(self, key, name):
+    #     """
+    #     Firstname and lastname db validator
+    #     :param name:
+    #     :param key:
+    #     :return:
+    #     """
+    #
+    #     if re.match(NAME_REG_EXP, name):
+    #         return name
+    #     raise ValueError
+    #
+    @validates("salary_from", "salary_to")
+    def validate_numbers(self, key, number_):
         """
         Firstname and lastname db validator
-        :param name:
+        :param number_:
         :param key:
         :return:
         """
+        return int(number_)
 
-        if re.match(NAME_REG_EXP, name):
-            return name
-        raise ValueError
+
+async def get_profile_by_user_id(user_id, session):
+    async with session() as session:
+        db_response = (await session.execute(select(Profile).where(Profile.user_id == user_id))).one_or_none()
+        if db_response:
+            return db_response[0]
+        return None

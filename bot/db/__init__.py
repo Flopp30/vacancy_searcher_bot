@@ -10,6 +10,7 @@ from bot.db.base import (
 from bot.db.engine import get_session_maker, proceed_schemas, create_async_engine
 from bot.db.profile import (
     Profile,
+    get_profile_by_user_id,
 )
 from bot.db.user import (
     User,
@@ -30,4 +31,5 @@ __all__ = [
     "User",
     "create_user",
     "Profile",
+    "get_profile_by_user_id",
 ]
