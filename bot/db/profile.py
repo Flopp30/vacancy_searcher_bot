@@ -1,9 +1,10 @@
 import enum
 
 from sqlalchemy import Column, BigInteger, Enum, VARCHAR, ForeignKey, Integer, Boolean, select
-from sqlalchemy.orm import relationship, validates
+from sqlalchemy.orm import relationship, validates, sessionmaker
 
-from bot.db import CustomBaseModel
+from bot.db.user import User
+from bot.db.base import get_object, CustomBaseModel
 
 
 # import re
@@ -21,7 +22,7 @@ class GradeTypes(enum.Enum):
 
     @classmethod
     def choices(cls):
-        return [exp_type.value for exp_type in cls]
+        return [grade_type.value for grade_type in cls]
 
 
 class WorkTypes(enum.Enum):
@@ -29,9 +30,10 @@ class WorkTypes(enum.Enum):
     Work types
     """
 
-    REMOTE = "remote"
-    PART_TIME = "part-time"
-    FULL_TIME = "full-time"
+    PART_TIME = "Частичная занятость"
+    TRAINEE = "Стажировка"
+    PROJECT = "Проектная работа"
+    FULL_TIME = "Полная занятость"
 
     @classmethod
     def choices(cls):
@@ -57,13 +59,9 @@ class Profile(
 
     professional_role = Column(VARCHAR(32))
 
-    grade = Column(Enum(*(
-        type.value for type in GradeTypes
-    ), name="grades"))
+    grade = Column(Enum(*GradeTypes.choices(), name="grade"))
 
-    work_type = Column(Enum(*(
-        work_type.value for work_type in WorkTypes
-    ), name="work_type"))
+    work_type = Column(Enum(*WorkTypes.choices(), name="work_types"))
 
     region = Column(VARCHAR(32))
 
@@ -73,8 +71,8 @@ class Profile(
     ready_for_relocation = Column(Boolean, default=False)
 
     # telegram user id
-    user_id = Column(BigInteger, ForeignKey('users.id'), nullable=False)
-    user = relationship('User', uselist=False, back_populates='profile')
+    user_id = Column(BigInteger, ForeignKey("users.id"), nullable=False)
+    user = relationship("User", uselist=False, back_populates="profile")
 
     # @validates("email")
     # def validate_email(self, key, address):
@@ -113,7 +111,26 @@ class Profile(
         return int(number_)
 
 
-async def get_profile_by_user_id(user_id, session):
+async def create_profile(
+        user_id: int,
+        session: sessionmaker
+) -> Profile:
+    user = await get_object(User, id_=user_id, session=session)
+    async with session() as session_:
+        async with session_.begin():
+            profile = Profile(user_id=user_id)
+            session_.add(profile)
+            await session_.flush()
+            user.profile = profile
+            await session_.merge(user)
+            await session_.merge(profile)
+        return profile
+
+
+async def get_profile_by_user_id(
+        user_id: int,
+        session: sessionmaker
+) -> Profile | None:
     async with session() as session:
         db_response = (await session.execute(select(Profile).where(Profile.user_id == user_id))).one_or_none()
         if db_response:

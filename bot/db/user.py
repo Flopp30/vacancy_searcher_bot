@@ -8,7 +8,6 @@ from sqlalchemy import (
 from sqlalchemy.orm import relationship, sessionmaker
 
 from bot.db.base import CustomBaseModel
-from bot.db.profile import Profile
 
 
 class User(
@@ -19,7 +18,7 @@ class User(
     """
     __tablename__ = "users"
 
-    profile = relationship('Profile', uselist=False, back_populates='user')
+    profile = relationship("Profile", uselist=False, back_populates="user")
 
     is_deleted = Column(Boolean, default=False)
 
@@ -42,11 +41,6 @@ async def create_user(
         async with session_.begin():
             user_args = {"id": user_id}
             user = User(**user_args)
-            profile = Profile(user_id=user_id)
             session_.add(user)
-            session_.add(profile)
             await session_.flush()
-            user.profile = profile
-            await session_.merge(user)
-            await session_.merge(profile)
         return user

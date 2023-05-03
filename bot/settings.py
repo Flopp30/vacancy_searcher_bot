@@ -1,11 +1,25 @@
 """
 Config file
 """
+import logging
 import os
 from pathlib import Path
 
 from dotenv import load_dotenv
 from sqlalchemy.engine.url import URL
+
+# logging
+
+logger = logging.getLogger()
+
+
+file_handler = logging.FileHandler('log.log')
+formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+logger.setLevel(logging.DEBUG)
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
 
 # Dirs
 BASE_DIR = Path(__file__).parent.parent
@@ -30,14 +44,11 @@ POSTGRES_URL = URL.create(
     password=DB_PASSWORD,
     database=DB_NAME,
 )
-
 EMAIL_REG_EXP = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$"
 
 NAME_REG_EXP = r"^[A-Za-zА-ЯЁа-яё]+$"
 
-
 # Request
-URL = "https://api.hh.ru/vacancies/"
 HEADERS = {
     "user-agent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 "
                   "(KHTML, like Gecko) Chrome/109.0.0.0 Safari/537.36"

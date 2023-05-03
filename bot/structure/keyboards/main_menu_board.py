@@ -8,6 +8,9 @@ MENU_BOARD = ReplyKeyboardMarkup(
                 text='Поиск вакансий',
             ),
             KeyboardButton(
+                text='Посмотреть профиль',
+            ),
+            KeyboardButton(
                 text='Изменить профиль',
                 web_app=WebAppInfo(url='https://flopp30.github.io/')
             ),

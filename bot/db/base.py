@@ -34,6 +34,12 @@ async def object_has_attr(
     return attr_ in object_.__table__.columns.keys()
 
 
+async def get_object_attrs(
+        object_: BaseModel,
+) -> tuple:
+    return object_.__table__.columns.keys()
+
+
 async def get_object(
         object_: BaseModel,
         id_: int,
@@ -111,8 +117,8 @@ async def delete_object(
     async with session() as session_:
         async with session_.begin():
             db_object = await get_object(object_, id_, session)
-            setattr(db_object, 'is_deleted', True)
-            if object_.__tablename__ == 'users':
-                setattr(db_object.profile, 'is_deleted', True)
+            setattr(db_object, "is_deleted", True)
+            if object_.__tablename__ == "users":
+                setattr(db_object.profile, "is_deleted", True)
                 await session_.merge(db_object.profile)
             await session_.merge(db_object)

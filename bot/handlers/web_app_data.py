@@ -5,21 +5,32 @@ import json
 
 from sqlalchemy.orm import sessionmaker
 
-from bot.db import update_object, Profile, get_profile_by_user_id
-from bot.db.profile import GradeTypes, WorkTypes
+from bot.db import update_object, Profile, get_profile_by_user_id, GradeTypes, WorkTypes, create_profile
+from bot.settings import logger
 
 
 async def web_app_data_receive(message: types.Message, session_maker: sessionmaker):
     await asyncio.sleep(0.1)
     data = json.loads(message.web_app_data.data)
     profile_args = {}
+    logger.debug(f"From web app returned data: {data}")
     for field_name, field_value in data.items():
         match field_name:
-            case 'work_type':
+            case "work_type":
                 field_value = WorkTypes(field_value).value
-            case 'grade':
+            case "grade":
                 field_value = GradeTypes(field_value).value
-        profile_args[field_name] = field_value
+        if field_value is not None:
+            profile_args[field_name] = field_value
     profile = await get_profile_by_user_id(user_id=message.from_user.id, session=session_maker)
-    await update_object(Profile, profile.id, profile_args, session_maker)
-    await message.answer("Данные успешно обновлены")
+    if not profile:
+        profile = await create_profile(user_id=message.from_user.id, session=session_maker)
+    logger.debug(f"Profile {profile.id} updating with data {profile_args}")
+    try:
+        await update_object(Profile, profile.id, profile_args, session_maker)
+        await message.answer("Данные успешно обновлены")
+        logger.debug(f"Profile {profile.id} updated successful")
+    except Exception as e:
+        logger.error(f"An error occurred while updating the profile."
+                     f"Profile: {profile}"
+                     f"Exc: {e}")
