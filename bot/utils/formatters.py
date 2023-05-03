@@ -2,7 +2,6 @@
 Message formatter.
 Convert dicts to message for bot answer
 """
-import locale
 from datetime import datetime
 
 from bot.db import Profile
@@ -14,10 +13,7 @@ async def format_dict_to_message(vacancy_dict: dict) -> str:
     :param vacancy_dict:
     :return:
     """
-    # set RU language
-    # TODO возможно это хак. Нужен для того,
-    #  чтобы месяц публикации (vacancy_dict["published"]) был на русском
-    locale.setlocale(locale.LC_ALL, "ru_RU.UTF-8")
+
     result = ""
 
     vacancy_name = vacancy_dict["vacancy_name"]
