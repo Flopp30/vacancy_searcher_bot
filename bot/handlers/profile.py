@@ -14,7 +14,7 @@ async def profile_info(message: types.Message, session_maker: sessionmaker) -> t
     """
     user_profile = await get_profile_by_user_id(user_id=message.from_user.id, session=session_maker)
     if not user_profile:
-        return await message.answer("Здесь пока ничего нет :(")
+        return await message.answer("Сначала профиль, потом вакансии :)")
     message_args = await profile_main_message_formatter(user_profile)
 
     text = TEXT_PROFILE.format(**message_args)

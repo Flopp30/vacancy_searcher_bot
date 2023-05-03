@@ -6,6 +6,7 @@ import json
 from sqlalchemy.orm import sessionmaker
 
 from bot.db import update_object, Profile, get_profile_by_user_id, GradeTypes, WorkTypes, create_profile
+from bot.handlers import profile_info, start
 from bot.settings import logger
 
 
@@ -28,9 +29,12 @@ async def web_app_data_receive(message: types.Message, session_maker: sessionmak
     logger.debug(f"Profile {profile.id} updating with data {profile_args}")
     try:
         await update_object(Profile, profile.id, profile_args, session_maker)
-        await message.answer("Данные успешно обновлены")
         logger.debug(f"Profile {profile.id} updated successful")
+        await message.answer("Данные успешно обновлены")
+        return await profile_info(message, session_maker)
     except Exception as e:
+        await message.answer("Произошла проблема при обновлении профиля. Попробуйте ещё раз")
         logger.error(f"An error occurred while updating the profile."
-                     f"Profile: {profile}"
+                     f"Profile: {profile.id}"
                      f"Exc: {e}")
+        return await start(message)
