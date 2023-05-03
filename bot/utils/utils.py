@@ -46,7 +46,7 @@ async def make_get_params_from_profile(profile: Profile) -> str:
                         reloc_status = getattr(profile, "ready_for_relocation")
                         if not reloc_status:
                             area_id = await get_area_id_by_area_name(value)
-                            get_params = f"area={area_id}&"
+                            get_params += f"area={area_id}&"
                         else:
                             get_params += "area=1&area=2&"
                     case "salary_from":
