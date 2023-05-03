@@ -12,7 +12,7 @@ services:
             - "5432:5432"
     bot:
         build: .
-        command: sh -c "python3 -m bot"
+        command: sh -c "make migrate && python3 -m bot"
         env_file:
             - ./.env
         depends_on:

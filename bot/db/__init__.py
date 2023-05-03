@@ -1,31 +1,42 @@
-from bot.db.base import BaseModel
-from bot.db.engine import get_session_maker, proceed_schemas, create_async_engine
+from bot.db.base import (
+    BaseModel,
+    object_has_attr,
+    get_object,
+    update_object,
+    is_object_exist,
+    delete_object,
+    CustomBaseModel,
+    get_object_attrs,
+)
+from bot.db.engine import get_session_maker, create_async_engine
+from bot.db.profile import (
+    Profile,
+    GradeTypes,
+    WorkTypes,
+    create_profile,
+    get_profile_by_user_id,
+)
 from bot.db.user import (
     User,
-    GradeTypes,
     create_user,
-    user_object_has_attr,
-    get_user,
-    is_user_exist,
-    update_user,
-    UserFieldsToUpdate,
-    get_hh_exp,
-    get_humanize_exp,
 )
 
 __all__ = [
     "get_session_maker",
-    "proceed_schemas",
     "create_async_engine",
     "BaseModel",
+    "CustomBaseModel",
+    "object_has_attr",
+    "get_object_attrs",
+    "get_object",
+    "update_object",
+    "is_object_exist",
+    "delete_object",
     "User",
-    "GradeTypes",
-    "UserFieldsToUpdate",
     "create_user",
-    "get_user",
-    "is_user_exist",
-    "update_user",
-    "user_object_has_attr",
-    "get_hh_exp",
-    "get_humanize_exp",
+    "GradeTypes",
+    "WorkTypes",
+    "Profile",
+    "create_profile",
+    "get_profile_by_user_id",
 ]
