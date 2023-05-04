@@ -35,6 +35,7 @@ TEXT_HELP = "Помощь и справка о боте\n" \
 
 TEXT_PROFILE = "<b>Профиль</b>\n" \
                "<i>Название специальности</i>: {professional_role}\n" \
+               "<i>Грейд</i>: {grade}\n" \
                "<i>Регион</i>: {region}\n" \
                "<i>З/П</i>: {salary_from} - {salary_to}\n" \
                "<i>Формат работы</i>: {work_type}\n" \

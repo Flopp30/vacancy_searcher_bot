@@ -82,6 +82,7 @@ async def profile_main_message_formatter(profile: Profile) -> dict:
     message_args = dict()
     message_args['professional_role'] = profile.professional_role \
         if profile.professional_role else 'Не заполнено'
+    message_args['grade'] = profile.grade if profile.grade else ''
     message_args['region'] = profile.region if profile.region else 'Не заполнено'
     message_args['ready_for_relocation'] = 'Да' if profile.ready_for_relocation else 'Нет'
     message_args['salary_from'] = profile.salary_from if profile.salary_from else 'Не заполнено'
