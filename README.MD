@@ -8,7 +8,11 @@
     TG_BOT_KEY=your key by BotFather
     POSTGRES_HOST=postgres_db
     ```
-3) Run ```docker-compose.yaml```
+3) Need check database url in ```alembic.ini``` on 61 line.
+   ```
+   sqlalchemy.url = postgresql+asyncpg://admin:password@postgres_db:5432/ja_bot
+   ```
+4) Run ```docker-compose.yaml```
    ```bash
    docker-compose up
    ```
@@ -40,26 +44,31 @@
 #### How to start
 1) Create db
    ```bash
-   docker-compose -f docker-compose-pg-only.yaml up 
+   docker-compose -f docker-compose-pg-only.yaml up
    ```
-2) In project directory
+2) Need check database url in ```alembic.ini``` on 61 line.
+   ```
+   sqlalchemy.url = postgresql+asyncpg://admin:password@localhost:5432/ja_bot
+   ```
+3) In project directory
    ```bash
+   make migrate
    python3 -m bot
    ```
 
 ## flake8 config:
 1) install flake8 in your environment
-```bash
-sudo apt install flake8 -y
-```
-2) add flake8 command in pre-commit file
-```bash
-nano .git/hooks/pre-commit
-```
-```
-#!/bin/sh
-flake8 . --ignore=E402,F841,E302,E305,W503 --max-line-length=120 --statistics --show-source --extend-exclude=venv
-```
-```bash
-chmod +x .git/hooks/pre-commit
-```
+   ```bash
+   sudo apt install flake8 -y
+   ```
+2) add flake8 command in git pre-commit file (```.git/hooks/pre-commit```)
+   ```bash
+   nano .git/hooks/pre-commit
+   ```
+   ```
+   #!/bin/sh
+   flake8 . --ignore=E402,F841,E302,E305,W503 --max-line-length=120 --statistics --show-source --extend-exclude=venv
+   ```
+   ```bash
+   chmod +x .git/hooks/pre-commit
+   ```
