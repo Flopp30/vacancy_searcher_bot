@@ -5,7 +5,7 @@ import json
 
 from sqlalchemy.orm import sessionmaker
 
-from bot.db import update_object, Profile, get_profile_by_user_id, GradeTypes, WorkTypes, create_profile
+from db import update_object, Profile, get_profile_by_user_id, GradeTypes, WorkTypes, create_profile
 from bot.handlers import profile_info, start
 from bot.settings import logger
 

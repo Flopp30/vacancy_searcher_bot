@@ -2,7 +2,7 @@ from aiogram import types
 from aiogram.enums import ParseMode
 from sqlalchemy.orm import sessionmaker
 
-from bot.db import get_profile_by_user_id
+from db import get_profile_by_user_id
 from bot.structure.keyboards import PROFILE_BOARD
 from bot.text_for_messages import TEXT_PROFILE
 from bot.utils import profile_main_message_formatter

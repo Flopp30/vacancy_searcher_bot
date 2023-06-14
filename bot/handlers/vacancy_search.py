@@ -11,7 +11,7 @@ from bot.structure.keyboards import PAGINATOR_BOARD
 from bot.text_for_messages import TEXT_CURRENT_MESSAGE_PAGINATOR
 from bot.utils import make_get_params_from_profile, get_data_from_hh, make_messages
 
-from bot.db import get_profile_by_user_id
+from db import get_profile_by_user_id
 
 
 async def vacancy_search_by_callback(

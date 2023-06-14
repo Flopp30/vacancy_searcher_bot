@@ -1,5 +1,5 @@
 from urllib.parse import quote
-from bot.db import get_object_attrs, Profile
+from db import get_object_attrs, Profile
 from bot.utils.hh_parser import get_area_id_by_area_name
 
 

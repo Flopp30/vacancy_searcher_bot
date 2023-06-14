@@ -7,7 +7,7 @@ from aiogram import BaseMiddleware
 from aiogram.types import Message, CallbackQuery
 from sqlalchemy.orm import sessionmaker
 
-from bot.db import create_user, User, is_object_exist
+from db import create_user, User, is_object_exist
 
 
 class RegisterCheck(BaseMiddleware):

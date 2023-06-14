@@ -4,7 +4,7 @@ Convert dicts to message for bot answer
 """
 from datetime import datetime
 
-from bot.db import Profile
+from db import Profile
 
 
 async def format_dict_to_message(vacancy_dict: dict) -> str:
