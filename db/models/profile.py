@@ -3,8 +3,7 @@ from sqlalchemy.orm import relationship, validates
 from db.models.base import CustomBaseModel, BaseModel
 
 
-import re
-from bot.settings import EMAIL_REG_EXP
+
 
 
 class GradeTypes(BaseModel):
@@ -40,7 +39,6 @@ class Profile(
 
     email = Column(
         String(255),
-        unique=True,
         server_default=text("''"),
     )
 
@@ -71,10 +69,12 @@ class Profile(
         :param address:
         :return:
         """
-
-        if re.match(EMAIL_REG_EXP, address):
-            return address
-        raise ValueError
+        return address
+        # import re
+        # from bot.settings import EMAIL_REG_EXP
+        # if re.match(EMAIL_REG_EXP, address):
+        #     return address
+        # raise ValueError
 
     @validates("salary_from", "salary_to")
     def validate_numbers(self, key, number_):

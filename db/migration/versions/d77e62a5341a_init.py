@@ -23,10 +23,10 @@ def upgrade() -> None:
     )
     op.bulk_insert(
         grade_type_table, [
-            {'id': 1, 'type': 'Trainee'},
-            {'id': 2, 'type': 'Junior'},
-            {'id': 3, 'type': 'Middle'},
-            {'id': 4, 'type': 'Senior'},
+            {'id': 1, 'type': 'trainee'},
+            {'id': 2, 'type': 'junior'},
+            {'id': 3, 'type': 'middle'},
+            {'id': 4, 'type': 'senior'},
         ])
     op.create_table(
         'users',
@@ -44,9 +44,10 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint('id')
     )
     op.bulk_insert(work_type_table, [
-        {'id': 1, 'type': 'Remote'},
-        {'id': 2, 'type': 'Part-time'},
-        {'id': 3, 'type': 'Full-time'},
+        {'id': 1, 'type': 'Стажировка'},
+        {'id': 2, 'type': 'Частичная занятость'},
+        {'id': 3, 'type': 'Проектная работа'},
+        {'id': 4, 'type': 'Полная занятость'},
     ])
     op.create_table(
         'profiles',
@@ -69,7 +70,6 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(['user_id'], ['users.id'], ),
         sa.ForeignKeyConstraint(['work_type_id'], ['work_types.id'], ),
         sa.PrimaryKeyConstraint('id'),
-        sa.UniqueConstraint('email'),
         sa.UniqueConstraint('id')
     )
     # ### end Alembic commands ###

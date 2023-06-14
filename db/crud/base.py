@@ -69,10 +69,10 @@ async def update_object(
         session: sessionmaker
 ) -> None:
     """
-    Partial update user"s data
+    Partial update
     :param object_:
     :param id_:
-    :param fields:
+    :param fields: {field_name: field_value... }
     :param session:
     :return:
     """
