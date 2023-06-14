@@ -3,9 +3,8 @@ BaseModel sql alchemy
 """
 import datetime
 
-from sqlalchemy import select, Column, DATE, BigInteger, Boolean
+from sqlalchemy import Column, DATE, BigInteger, Boolean
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import sessionmaker
 
 BaseModel = declarative_base()
 
@@ -18,4 +17,3 @@ class CustomBaseModel(BaseModel):
     updated_at = Column(DATE, onupdate=datetime.datetime.now())
 
     is_deleted = Column(Boolean, default=False)
-
