@@ -3,7 +3,6 @@ Vacancy search by profile
 """
 from aiogram import types
 from aiogram.fsm.context import FSMContext
-from sqlalchemy.orm import sessionmaker
 
 from bot.settings import VACANCY_TO_SHOW_COUNT
 from bot.structure import SearchCallBack
@@ -12,6 +11,7 @@ from bot.text_for_messages import TEXT_CURRENT_MESSAGE_PAGINATOR
 from bot.utils import make_get_params_from_profile, get_data_from_hh, make_messages
 
 from db.crud.profile import profile_crud
+
 
 async def vacancy_search_by_callback(
         callback_query: types.CallbackQuery,

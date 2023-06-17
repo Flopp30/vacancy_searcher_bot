@@ -8,6 +8,7 @@ from aiogram.types import Message, CallbackQuery
 
 from db.crud.base import user_crud
 
+
 class RegisterCheck(BaseMiddleware):
 
     async def __call__(

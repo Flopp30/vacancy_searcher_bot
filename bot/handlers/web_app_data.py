@@ -21,7 +21,7 @@ async def web_app_data_receive(message: types.Message):
             elif field_name == 'grade':
                 grade = await grade_types_crud.get_by_attribute('type', field_value)
                 profile_args['grade_type_id'] = grade.id
-            elif field_name == 'work_type':            
+            elif field_name == 'work_type':
                 work_type = await work_types_crud.get_by_attribute('type', field_value)
                 profile_args['work_type_id'] = work_type.id
             else:

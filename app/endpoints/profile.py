@@ -18,7 +18,9 @@ async def get_profile_form(
     """
     returns profile template.
     """
-    profile = await profile_crud.get_by_attribute('user_id', user_id, is_deleted=False)
+    profile = await profile_crud.get_by_attribute(
+        'user_id', user_id, is_deleted=False
+    )
     if profile:
         return templates.TemplateResponse(
             'profile.html', {'request': request, 'profile': profile}
@@ -36,7 +38,7 @@ async def create_or_update_profile(
     salary_from: int = Form(..., gt=0),
     salary_to: int = Form(..., gt=0),
     ready_for_relocation: bool = Form(False),
-) -> dict[str: str | int | bool]:  
+) -> dict[str: str | int | bool]:
     """
     creates new profile or updates existing.
     """
@@ -53,11 +55,13 @@ async def create_or_update_profile(
         "ready_for_relocation": ready_for_relocation,
         "user_id": user_id,
     }
-    
-    profile = await profile_crud.get_by_attribute('user_id', user_id, is_deleted=False)
-    
+
+    profile = await profile_crud.get_by_attribute(
+        'user_id', user_id, is_deleted=False
+    )
+
     if profile:
         await profile_crud.update(profile, data)
     else:
-        await profile_crud.create(data)        
+        await profile_crud.create(data)
     return data

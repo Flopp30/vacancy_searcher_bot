@@ -1,6 +1,5 @@
 from aiogram import types
 from aiogram.enums import ParseMode
-from sqlalchemy.orm import sessionmaker
 
 from bot.structure.keyboards import PROFILE_BOARD
 from bot.text_for_messages import TEXT_PROFILE
@@ -13,7 +12,6 @@ async def profile_info(message: types.Message) -> types.Message:
     """
     Profile handler. Main
     """
-    
     user_profile = await profile_crud.get_profile_by_attribute(
             attr_name='user_id',
             attr_value=message.from_user.id,

@@ -35,6 +35,7 @@ async def get_session_maker(engine: AsyncEngine) -> async_sessionmaker:
 engine = create_async_engine(POSTGRES_URL)
 AsyncSessionLocal = sessionmaker(engine, class_=AsyncSession)
 
+
 async def get_async_session():
     """
     Returns async session for FastAPI Dependency Injections.

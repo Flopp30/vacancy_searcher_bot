@@ -28,17 +28,21 @@ class CRUDBase:
         return db_obj.scalars().first()
 
     async def get_by_attribute(
-            self, 
-            attr_name: str, 
+            self,
+            attr_name: str,
             attr_value: str | int | bool,
             session: AsyncSession,
             is_deleted: Optional[bool] = None,
     ) -> BaseModel:
         attr = getattr(self.model, attr_name)
 
-        if is_deleted is not None and (self.model == Profile or self.model == User):
+        if is_deleted is not None and (
+            self.model == Profile or self.model == User
+        ):
             db_obj = await session.execute(
-                select(self.model).where(attr == attr_value, self.model.is_deleted == is_deleted)
+                select(self.model).where(
+                    attr == attr_value, self.model.is_deleted == is_deleted
+                )
             )
             return db_obj.scalars().first()
 
@@ -66,7 +70,6 @@ class CRUDBase:
         # await session.refresh(db_obj)
         # return db_obj
 
-
     async def update(
             self,
             db_obj: BaseModel,
@@ -91,8 +94,8 @@ class CRUDBase:
         setattr(db_obj, "is_deleted", True)
         session.add(db_obj)
         if self.model == User:
-                setattr(db_obj.profile, "is_deleted", True)
-                session.add(db_obj.profile)
+            setattr(db_obj.profile, "is_deleted", True)
+            session.add(db_obj.profile)
         await session.commit()
         # return db_obj
 

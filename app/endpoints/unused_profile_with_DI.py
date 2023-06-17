@@ -3,7 +3,8 @@
 # from fastapi.templating import Jinja2Templates
 # from sqlalchemy.ext.asyncio import AsyncSession
 
-# from db import get_async_session, profile_crud, grade_types_crud, work_types_crud
+# from db import get_async_session, profile_crud
+# from db import grade_types_crud, work_types_crud
 # from .validators import validate_salary
 
 
@@ -17,13 +18,13 @@
 #     user_id: int,
 #     session: AsyncSession = Depends(get_async_session),
 # ):
-#     profile = await profile_crud.get_by_attribute('user_id', user_id, session, is_deleted=False)
+#     profile = await profile_crud.get_by_attribute(
+#        'user_id', user_id, session, is_deleted=False)
 #     if profile:
 #         return templates.TemplateResponse(
 #             'profile.html', {'request': request, 'profile': profile}
 #         )
 #     return templates.TemplateResponse('profile.html', {'request': request})
-
 
 
 # @router.post('/{user_id}', response_class=HTMLResponse)
@@ -37,10 +38,11 @@
 #     salary_to: int = Form(..., gt=0),
 #     ready_for_relocation: bool = Form(False),
 #     session: AsyncSession = Depends(get_async_session),
-# ):  
+# ):
 #     validate_salary(salary_from, salary_to)
 #     grade = await grade_types_crud.get_by_attribute('type', grade, session)
-#     work_type = await work_types_crud.get_by_attribute('type', work_type, session)
+#     work_type = await work_types_crud.get_by_attribute(
+#        'type', work_type, session)
 #     data = {
 #         "professional_role": professional_role,
 #         "grade_type_id": grade.id,
@@ -51,11 +53,13 @@
 #         "ready_for_relocation": ready_for_relocation,
 #         "user_id": user_id,
 #     }
-    
-#     profile = await profile_crud.get_by_attribute('user_id', user_id, session, is_deleted=False)
-    
+
+#     profile = await profile_crud.get_by_attribute(
+#        'user_id', user_id, session, is_deleted=False
+#    )
+
 #     if profile:
 #         await profile_crud.update(profile, data, session)
 #     else:
-#         await profile_crud.create(data, session)        
+#         await profile_crud.create(data, session)
 #     return data

@@ -1,9 +1,7 @@
-from sqlalchemy import Column, BigInteger, VARCHAR, ForeignKey, Integer, Boolean, text, String
+from sqlalchemy import (Column, BigInteger, VARCHAR, ForeignKey,
+                        Integer, Boolean, text, String)
 from sqlalchemy.orm import relationship, validates
 from db.models.base import CustomBaseModel, BaseModel
-
-
-
 
 
 class GradeTypes(BaseModel):

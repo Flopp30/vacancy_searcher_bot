@@ -13,8 +13,8 @@ class CRUDProfile(CRUDBase):
     Implements Profile specific methods.
     """
     async def get_profile_by_attribute(
-            self, 
-            attr_name: str, 
+            self,
+            attr_name: str,
             attr_value: str | int | bool,
             is_deleted: Optional[bool] = None,
     ) -> Profile:
