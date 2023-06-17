@@ -49,4 +49,4 @@ class Response(GenericModel, Generic[T]):
     code: str
     status: str
     message: str
-    result: [T]
+    result: list[T]

@@ -2,31 +2,45 @@ import asyncio
 import json
 
 from aiogram import types
-from sqlalchemy.orm import sessionmaker
 
 from bot.handlers import profile_info, start
 from bot.settings import logger
-from db import get_profile_by_user_id, create_profile
-from db.crud.profile import update_profile
+from db.crud.profile import profile_crud
+from db.crud.base import grade_types_crud, work_types_crud
 
 
-async def web_app_data_receive(message: types.Message, session_maker: sessionmaker):
+async def web_app_data_receive(message: types.Message):
     await asyncio.sleep(0.1)
     data = json.loads(message.web_app_data.data)
     profile_args = {}
     logger.debug(f"From web app returned data: {data}")
     for field_name, field_value in data.items():
         if field_value is not None:
-            profile_args[field_name] = field_value
-    profile = await get_profile_by_user_id(user_id=message.from_user.id, session=session_maker)
+            if field_name in ('salary_from', 'salary_to'):
+                profile_args[field_name] = int(field_value)
+            elif field_name == 'grade':
+                grade = await grade_types_crud.get_by_attribute('type', field_value)
+                profile_args['grade_type_id'] = grade.id
+            elif field_name == 'work_type':            
+                work_type = await work_types_crud.get_by_attribute('type', field_value)
+                profile_args['work_type_id'] = work_type.id
+            else:
+                profile_args[field_name] = field_value
+    profile = await profile_crud.get_profile_by_attribute(
+            attr_name='user_id',
+            attr_value=message.from_user.id,
+            is_deleted=False
+        )
     if not profile:
-        profile = await create_profile(user_id=message.from_user.id, session=session_maker)
+        profile_args['user_id'] = message.from_user.id
+        profile = await profile_crud.create(profile_args)
     logger.debug(f"Profile {profile.id} updating with data {profile_args}")
+
     try:
-        await update_profile(profile, profile_args, session_maker)
+        profile = await profile_crud.update(profile, profile_args)
         logger.debug(f"Profile {profile.id} updated successful")
         await message.answer("Данные успешно обновлены")
-        return await profile_info(message, session_maker)
+        return await profile_info(message)
     except Exception as e:
         await message.answer("Произошла ошибка при обновлении профиля. Попробуйте ещё раз")
         logger.error(f"An error occurred while updating the profile."

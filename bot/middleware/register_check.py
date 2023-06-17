@@ -5,10 +5,8 @@ from typing import Callable, Dict, Any, Awaitable
 
 from aiogram import BaseMiddleware
 from aiogram.types import Message, CallbackQuery
-from sqlalchemy.orm import sessionmaker
 
-from db import create_user, User, is_object_exist
-
+from db.crud.base import user_crud
 
 class RegisterCheck(BaseMiddleware):
 
@@ -18,11 +16,12 @@ class RegisterCheck(BaseMiddleware):
             event: Message | CallbackQuery,
             data: Dict[str, Any]
     ) -> Any:
-        session_maker: sessionmaker = data["session_maker"]
-        if not await is_object_exist(object_=User, id_=event.from_user.id, session=session_maker):
-            await create_user(
-                user_id=event.from_user.id,
-                session=session_maker,
-            )
+
+        user = await user_crud.get_by_attribute(
+            attr_name='id',
+            attr_value=event.from_user.id,
+            is_deleted=False)
+        if not user:
+            await user_crud.create({'id': event.from_user.id})
 
         return await handler(event, data)
