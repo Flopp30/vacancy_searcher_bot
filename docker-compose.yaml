@@ -5,16 +5,17 @@ services:
         image: postgres:14.5-alpine
         restart: on-failure
         env_file:
-            - .env
+            - .env.prod
         volumes:
             - postgres_data:/var/lib/postgresql/data
         ports:
             - "5432:5432"
     bot:
-        build: .
+        build:
+            dockerfile: Dockerfile_bot
         command: sh -c "make migrate && python3 -m bot"
         env_file:
-            - ./.env
+            - .env.prod
         depends_on:
             - postgres_db
         volumes:

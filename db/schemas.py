@@ -1,8 +1,7 @@
 from datetime import datetime
 from typing import Generic, TypeVar
 
-from fastapi import Form
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, validator
 from pydantic.generics import GenericModel
 
 T = TypeVar("T")
@@ -15,6 +14,24 @@ class BaseMixin:
     updated_at: datetime
 
 
+class ProfileForm(BaseModel):
+    professional_role: str = Field(..., min_length=1, max_length=32)
+    grade: str = Field(...)
+    work_type: str = Field(...)
+    region: str = Field(..., min_length=1, max_length=32)
+    salary_from: int = Field(..., gte=0)
+    salary_to: int = Field(..., gte=0)
+    ready_for_relocation: bool = False
+
+    @validator('salary_to')
+    @staticmethod
+    def validate_salary_to(salary_to, values):
+        salary_from = values.get('salary_from')
+        if salary_to < salary_from:
+            raise ValueError('Salary "to" cannot be less than salary "from"')
+        return salary_to
+
+
 class GradeTypesSchema(BaseModel):
     id: int
     type: str
@@ -23,59 +40,6 @@ class GradeTypesSchema(BaseModel):
 class WorkTypesSchema(BaseModel):
     id: int
     type: str
-
-
-class UserSchema(BaseMixin, BaseModel):
-    class Config:
-        orm_mode = True
-
-
-class ProfileCreate(BaseModel):
-    professional_role: str
-    grade: str
-    work_type: str
-    region: str
-    salary_from: int
-    salary_to: int
-    ready_for_relocation: bool
-
-    @classmethod
-    def as_form(
-        cls,
-        professional_role: str = Form(..., min_length=1, max_length=32),
-        grade: str = Form(...),
-        work_type: str = Form(...),
-        region: str = Form(..., min_length=1, max_length=32),
-        salary_from: int = Form(..., gt=0),
-        salary_to: int = Form(..., gt=0),
-        ready_for_relocation: bool = Form(False),
-    ):
-        return ProfileCreate(
-            professional_role=professional_role,
-            grade=grade,
-            work_type=work_type,
-            region=region,
-            salary_from=salary_from,
-            salary_to=salary_to,
-            ready_for_relocation=ready_for_relocation,
-        )
-
-
-class ProfileSchema(BaseMixin, BaseModel):
-    firstname: str
-    lastname: str
-    professional_role: str
-    grade_type: WorkTypesSchema = Field(...)
-    work_type: WorkTypesSchema = Field(...)
-    region: str
-    salary_from: int
-    salary_to: int
-    ready_for_relocation: bool
-    user: UserSchema = Field(...)
-
-
-class RequestUser(BaseModel):
-    parameter: UserSchema = Field(...)
 
 
 class Response(GenericModel, Generic[T]):
