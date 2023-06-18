@@ -28,7 +28,7 @@ class ProfileForm(BaseModel):
     def validate_salary_to(salary_to, values):
         salary_from = values.get('salary_from')
         if salary_to < salary_from:
-            raise ValueError('Salary "to" cannot be less than salary "from"')
+            raise ValueError('Интервал зарплат указан некорректно.')
         return salary_to
 
 
