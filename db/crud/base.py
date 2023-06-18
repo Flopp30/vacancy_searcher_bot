@@ -72,7 +72,7 @@ class CRUDBase:
             self,
             obj_in_data: dict[str: str | int | bool],
             session: AsyncSession,
-    ) -> None:
+    ) -> BaseModel:
         db_obj = self.model(**obj_in_data)
         session.add(db_obj)
         await session.commit()
@@ -84,7 +84,7 @@ class CRUDBase:
             db_obj: BaseModel,
             obj_in_data: dict[str: str | int | bool],
             session: AsyncSession,
-    ) -> None:
+    ) -> BaseModel:
         """
         Updates db_object and returns refreshed one.
         """
@@ -99,7 +99,7 @@ class CRUDBase:
             self,
             db_obj: BaseModel,
             session: AsyncSession,
-    ) -> None:
+    ) -> BaseModel:
         """
         Sets is_deleted status to deleted db_objects.
         """
