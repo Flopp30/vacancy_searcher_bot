@@ -8,13 +8,15 @@ from bot.utils import profile_main_message_formatter
 from db.crud.profile import profile_crud
 
 
-async def profile_info(message: types.Message) -> types.Message:
+async def profile_info(message: types.Message, get_async_session) -> types.Message:
     """
     Profile handler. Main
     """
-    user_profile = await profile_crud.get_profile_by_attribute(
+    async with get_async_session() as session:
+        user_profile = await profile_crud.get_profile_by_attribute(
             attr_name='user_id',
             attr_value=message.from_user.id,
+            session=session,
             is_deleted=False
         )
 

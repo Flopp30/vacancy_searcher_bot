@@ -17,11 +17,14 @@ class RegisterCheck(BaseMiddleware):
             event: Message | CallbackQuery,
             data: Dict[str, Any]
     ) -> Any:
-
-        user = await user_crud.get_by_attribute(
-            attr_name='id',
-            attr_value=event.from_user.id,
-            is_deleted=False)
+        get_async_session = data["get_async_session"]
+        async with get_async_session() as session:
+            user = await user_crud.get_by_attribute(
+                attr_name='id',
+                attr_value=event.from_user.id,
+                session=session,
+                is_deleted=False
+            )
         if not user:
             await user_crud.create({'id': event.from_user.id})
 

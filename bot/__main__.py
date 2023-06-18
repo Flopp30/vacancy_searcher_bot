@@ -7,12 +7,9 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.types import BotCommand
 
-from db import (
-    create_async_engine,
-    get_session_maker,
-)
+from db import bot_get_async_session
 from bot.handlers import register_user_commands, BOT_COMMANDS_INFO
-from bot.settings import TG_BOT_KEY, POSTGRES_URL, logger
+from bot.settings import TG_BOT_KEY, logger
 
 
 async def async_main() -> None:
@@ -26,11 +23,8 @@ async def async_main() -> None:
         commands_for_bot.append(BotCommand(command=cmd[0], description=cmd[1]))
     await bot.set_my_commands(commands_for_bot)
     register_user_commands(dp)
-    # db
-    async_engine = create_async_engine(POSTGRES_URL)
-    session_maker = await get_session_maker(async_engine)
 
-    await dp.start_polling(bot, session_maker=session_maker)
+    await dp.start_polling(bot, get_async_session=bot_get_async_session)
 
 
 def main():

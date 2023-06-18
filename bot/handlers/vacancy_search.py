@@ -15,11 +15,14 @@ from db.crud.profile import profile_crud
 
 async def vacancy_search_by_callback(
         callback_query: types.CallbackQuery,
-        state: FSMContext
+        state: FSMContext,
+        get_async_session,
 ):
-    user_profile = await profile_crud.get_profile_by_attribute(
+    async with get_async_session() as session:
+        user_profile = await profile_crud.get_profile_by_attribute(
             attr_name='user_id',
             attr_value=callback_query.from_user.id,
+            session=session,
             is_deleted=False
         )
     get_params = await make_get_params_from_profile(user_profile)
@@ -44,14 +47,17 @@ async def vacancy_search_by_callback(
 
 async def vacancy_search(
         message: types.Message,
-        state: FSMContext
+        state: FSMContext,
+        get_async_session,
 ) -> types.Message:
     """
     search handler. Main
     """
-    user_profile = await profile_crud.get_profile_by_attribute(
+    async with get_async_session() as session:
+        user_profile = await profile_crud.get_profile_by_attribute(
             attr_name='user_id',
             attr_value=message.from_user.id,
+            session=session,
             is_deleted=False
         )
     if not user_profile:

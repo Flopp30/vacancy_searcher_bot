@@ -1,11 +1,12 @@
 """
 Async engine for SqlAlchemy
 """
+from contextlib import asynccontextmanager
+
 from sqlalchemy.engine.url import URL
 from sqlalchemy.ext.asyncio import (
     AsyncEngine,
     AsyncSession,
-    async_sessionmaker,
     create_async_engine as _create_async_engine
 )
 from sqlalchemy.orm import sessionmaker
@@ -20,17 +21,6 @@ def create_async_engine(url: URL | str) -> AsyncEngine:
     :return:
     """
     return _create_async_engine(url=url, pool_pre_ping=True)
-    # return _create_async_engine(url=url, echo=True, pool_pre_ping=True)
-
-
-async def get_session_maker(engine: AsyncEngine) -> async_sessionmaker:
-    """
-    return async session maker
-    :param engine:
-    :return:
-    """
-    return async_sessionmaker(engine, class_=AsyncSession)
-    # return async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
 engine = create_async_engine(POSTGRES_URL)
@@ -42,4 +32,16 @@ async def get_async_session():
     Returns async session for FastAPI Dependency Injections.
     """
     async with AsyncSessionLocal() as async_session:
-        yield async_session
+        try:
+            yield async_session
+        finally:
+            await async_session.close()
+
+
+@asynccontextmanager
+async def bot_get_async_session():
+    async with AsyncSessionLocal() as async_session:
+        try:
+            yield async_session
+        finally:
+            await async_session.close()

@@ -12,6 +12,7 @@ class CRUDProfile(CRUDBase):
     """
     Implements Profile specific methods.
     """
+
     async def get_profile_by_attribute(
             self,
             attr_name: str,
@@ -28,10 +29,10 @@ class CRUDProfile(CRUDBase):
                 select(self.model).options(
                     joinedload(Profile.work_type),
                     joinedload(Profile.grade_type)).where(
-                        attr == attr_value,
-                        self.model.is_deleted == is_deleted
-                    )
+                    attr == attr_value,
+                    self.model.is_deleted == is_deleted
                 )
+            )
             return db_obj.scalars().first()
 
 
