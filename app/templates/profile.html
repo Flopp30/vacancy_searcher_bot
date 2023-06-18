@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <!-- Bootstrap CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+    />
+    <title>
+      {% if profile %}Изменение профиля{% else %}Создание профиля{% endif %}
+    </title>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="my-5">
+        {% if profile %}Изменение профиля{% else %}Создание профиля{% endif%}
+      </h2>
+
+      <form method="post" action="" id="edit-profile-form" class="mb-5">
+        <div class="form-group">
+          <label for="professional_role">Название специальности</label>
+          <input
+            name="professional_role"
+            type="text"
+            class="form-control"
+            id="professional_role"
+            placeholder="Специальность"
+            required
+            {% if profile %}
+            value="{{ profile.professional_role }}"
+            {% endif%}
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="grade">Грейд</label>
+          <select name="grade" class="form-control" id="grade" required>
+            <option value="">Выберите свой грейд</option>
+            <option value="trainee"
+              {% if profile and profile.grade_type_id == 1 %}
+                selected
+              {% endif %}>
+              Стажер
+            </option>
+            <option value="junior"
+              {% if profile and profile.grade_type_id == 2 %}
+                selected
+              {% endif %}>
+              Junior
+            </option>            
+            <option value="middle"
+              {% if profile and profile.grade_type_id == 3 %}
+                selected
+              {% endif %}>
+              Middle
+            </option>
+            <option value="senior"
+              {% if profile and profile.grade_type_id == 4 %}
+                selected
+              {% endif %}>
+              Senior
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="work_type">Формат работы</label>
+          <select name="work_type" class="form-control" id="work_type">
+            <option value="">Все</option>
+            <option value="Стажировка"
+              {% if profile and profile.work_type_id == 1 %}
+                selected
+              {% endif %}>
+              Стажировка
+            </option>
+            <option value="Частичная занятость"
+              {% if profile and profile.work_type_id == 2 %}
+                selected
+              {% endif %}>
+              Частичная занятость
+            </option>
+            <option value="Проектная работа"
+              {% if profile and profile.work_type_id == 3 %}
+                selected
+              {% endif %}>
+              Проектная работа
+            </option>
+            <option value="Полная занятость"
+              {% if profile and profile.work_type_id == 4 %}
+                selected
+              {% endif%}>
+              Полная занятость
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="region">Регион</label>
+          <input
+            name="region"
+            type="text"
+            class="form-control"
+            id="region"
+            placeholder="Регион поиска"
+            {% if profile %}
+            value="{{ profile.region }}"
+            {% endif%}
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="salary_from">Зарплата от</label>
+          <input
+            name="salary_from"
+            type="number"
+            class="form-control"
+            id="salary_from"
+            placeholder="1000"
+            required
+            {% if profile %}
+            value="{{ profile.salary_from }}"
+            {% endif%}
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="salary_to">Зарплата до</label>
+          <input
+            name="salary_to"
+            type="number"
+            class="form-control"
+            id="salary_to"
+            placeholder="10000"
+            required
+            {% if profile %}
+            value="{{ profile.salary_to }}"
+            {% endif%}
+          />
+        </div>
+
+        <div class="form-group form-check">
+          <input
+            name="ready_for_relocation"
+            type="checkbox"
+            class="form-check-input"
+            id="ready_for_relocation"
+            {% if profile and profile.ready_for_relocation %}
+            checked
+            {% endif%}
+          />
+          <label class="form-check-label" for="ready_for_relocation"
+            >Готов к переезду?</label
+          >
+        </div>
+        <button type="submit" class="btn btn-primary">Изменить</button>
+      </form>
+    </div>
+  </body>
+</html>

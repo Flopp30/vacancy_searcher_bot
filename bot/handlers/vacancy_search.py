@@ -3,7 +3,6 @@ Vacancy search by profile
 """
 from aiogram import types
 from aiogram.fsm.context import FSMContext
-from sqlalchemy.orm import sessionmaker
 
 from bot.settings import VACANCY_TO_SHOW_COUNT
 from bot.structure import SearchCallBack
@@ -11,15 +10,18 @@ from bot.structure.keyboards import PAGINATOR_BOARD
 from bot.text_for_messages import TEXT_CURRENT_MESSAGE_PAGINATOR
 from bot.utils import make_get_params_from_profile, get_data_from_hh, make_messages
 
-from db import get_profile_by_user_id
+from db.crud.profile import profile_crud
 
 
 async def vacancy_search_by_callback(
         callback_query: types.CallbackQuery,
-        session_maker: sessionmaker,
         state: FSMContext
 ):
-    user_profile = await get_profile_by_user_id(user_id=callback_query.from_user.id, session=session_maker)
+    user_profile = await profile_crud.get_profile_by_attribute(
+            attr_name='user_id',
+            attr_value=callback_query.from_user.id,
+            is_deleted=False
+        )
     get_params = await make_get_params_from_profile(user_profile)
     vacancies = await get_data_from_hh(get_params=get_params, vacancy_count=VACANCY_TO_SHOW_COUNT)
     if vacancies:
@@ -42,13 +44,16 @@ async def vacancy_search_by_callback(
 
 async def vacancy_search(
         message: types.Message,
-        session_maker: sessionmaker,
         state: FSMContext
 ) -> types.Message:
     """
     search handler. Main
     """
-    user_profile = await get_profile_by_user_id(user_id=message.from_user.id, session=session_maker)
+    user_profile = await profile_crud.get_profile_by_attribute(
+            attr_name='user_id',
+            attr_value=message.from_user.id,
+            is_deleted=False
+        )
     if not user_profile:
         return await message.answer("Для поиска вакансий тебе необходимо создать профиль")
     get_params = await make_get_params_from_profile(user_profile)

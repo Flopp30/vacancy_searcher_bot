@@ -1,18 +1,23 @@
 from aiogram import types
 from aiogram.enums import ParseMode
-from sqlalchemy.orm import sessionmaker
 
-from db import get_profile_by_user_id
 from bot.structure.keyboards import PROFILE_BOARD
 from bot.text_for_messages import TEXT_PROFILE
 from bot.utils import profile_main_message_formatter
 
+from db.crud.profile import profile_crud
 
-async def profile_info(message: types.Message, session_maker: sessionmaker) -> types.Message:
+
+async def profile_info(message: types.Message) -> types.Message:
     """
     Profile handler. Main
     """
-    user_profile = await get_profile_by_user_id(user_id=message.from_user.id, session=session_maker)
+    user_profile = await profile_crud.get_profile_by_attribute(
+            attr_name='user_id',
+            attr_value=message.from_user.id,
+            is_deleted=False
+        )
+
     if not user_profile:
         return await message.answer("Сначала профиль, потом вакансии :)")
     message_args = await profile_main_message_formatter(user_profile)
