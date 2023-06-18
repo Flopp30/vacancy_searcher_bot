@@ -9,7 +9,9 @@ from db.models.base import BaseModel
 
 
 class CRUDBase:
-    """Базовые CRUD операции для работы с БД."""
+    """
+    Basic CRUD operaions to work with db.
+    """
 
     def __init__(self, model):
         self.model = model
@@ -19,7 +21,9 @@ class CRUDBase:
             obj_id: int,
             session: AsyncSession,
     ) -> BaseModel:
-        """Возвращает объект по его id."""
+        """
+        Returns db_object by it's id value.
+        """
         db_obj = await session.execute(
             select(self.model).where(
                 self.model.id == obj_id
@@ -34,6 +38,9 @@ class CRUDBase:
             session: AsyncSession,
             is_deleted: Optional[bool] = None,
     ) -> BaseModel:
+        """
+        Returns db_object by any attr value.
+        """
         attr = getattr(self.model, attr_name)
 
         if is_deleted is not None and (
@@ -55,7 +62,9 @@ class CRUDBase:
             self,
             session: AsyncSession
     ) -> list[BaseModel]:
-        """Возвращает список всех объектов модели."""
+        """
+        Returns list of db_objects
+        """
         db_objs = await session.execute(select(self.model))
         return db_objs.scalars().all()
 
@@ -67,8 +76,8 @@ class CRUDBase:
         db_obj = self.model(**obj_in_data)
         session.add(db_obj)
         await session.commit()
-        # await session.refresh(db_obj)
-        # return db_obj
+        await session.refresh(db_obj)
+        return db_obj
 
     async def update(
             self,
@@ -76,28 +85,31 @@ class CRUDBase:
             obj_in_data: dict[str: str | int | bool],
             session: AsyncSession,
     ) -> None:
-        """Вносит изменения в объект базы данных."""
-
+        """
+        Updates db_object and returns refreshed one.
+        """
         for field, value in obj_in_data.items():
             setattr(db_obj, field, value)
         session.add(db_obj)
         await session.commit()
-        # await session.refresh(db_obj)
-        # return db_obj
+        await session.refresh(db_obj)
+        return db_obj
 
     async def delete(
             self,
             db_obj: BaseModel,
             session: AsyncSession,
     ) -> None:
-        """Отмечает объект из базы данных как удаленный."""
+        """
+        Sets is_deleted status to deleted db_objects.
+        """
         setattr(db_obj, "is_deleted", True)
         session.add(db_obj)
         if self.model == User:
             setattr(db_obj.profile, "is_deleted", True)
             session.add(db_obj.profile)
         await session.commit()
-        # return db_obj
+        return db_obj
 
 
 user_crud = CRUDBase(User)
