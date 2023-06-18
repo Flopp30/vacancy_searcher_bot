@@ -1,5 +1,7 @@
 from datetime import datetime
 from typing import Generic, TypeVar
+
+from fastapi import Form
 from pydantic import BaseModel, Field
 from pydantic.generics import GenericModel
 
@@ -26,6 +28,37 @@ class WorkTypesSchema(BaseModel):
 class UserSchema(BaseMixin, BaseModel):
     class Config:
         orm_mode = True
+
+
+class ProfileCreate(BaseModel):
+    professional_role: str
+    grade: str
+    work_type: str
+    region: str
+    salary_from: int
+    salary_to: int
+    ready_for_relocation: bool
+
+    @classmethod
+    def as_form(
+        cls,
+        professional_role: str = Form(..., min_length=1, max_length=32),
+        grade: str = Form(...),
+        work_type: str = Form(...),
+        region: str = Form(..., min_length=1, max_length=32),
+        salary_from: int = Form(..., gt=0),
+        salary_to: int = Form(..., gt=0),
+        ready_for_relocation: bool = Form(False),
+    ):
+        return ProfileCreate(
+            professional_role=professional_role,
+            grade=grade,
+            work_type=work_type,
+            region=region,
+            salary_from=salary_from,
+            salary_to=salary_to,
+            ready_for_relocation=ready_for_relocation,
+        )
 
 
 class ProfileSchema(BaseMixin, BaseModel):
