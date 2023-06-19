@@ -26,6 +26,7 @@ class RegisterCheck(BaseMiddleware):
                 is_deleted=False
             )
         if not user:
-            await user_crud.create({'id': event.from_user.id})
+            async with get_async_session() as session:
+                await user_crud.create({'id': event.from_user.id}, session=session)
 
         return await handler(event, data)

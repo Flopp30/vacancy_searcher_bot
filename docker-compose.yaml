@@ -21,6 +21,15 @@ services:
         volumes:
             - .:/bot
         restart: always
+    app:
+        build:
+            dockerfile: Dockerfile_app
+        env_file:
+            - .env.prod
+        depends_on:
+            - postgres_db
+            - bot
+        restart: always
 
 volumes:
     postgres_data:
