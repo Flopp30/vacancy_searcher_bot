@@ -9,19 +9,10 @@ __all__ = [
     "AsyncSessionLocal",
     "BaseModel",
     "CustomBaseModel",
-    "object_has_attr",
-    "get_object_attrs",
-    "get_object",
-    'update_object',
-    "is_object_exist",
-    "delete_object",
     "User",
-    "create_user",
     "GradeTypes",
     "WorkTypes",
     "Profile",
-    "create_profile",
-    "get_profile_by_user_id",
 ]
 
 from db.engine import create_async_engine, get_async_session, AsyncSessionLocal, bot_get_async_session

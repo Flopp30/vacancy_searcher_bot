@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import (
 )
 from sqlalchemy.orm import sessionmaker
 
-from .settings import POSTGRES_URL
+from db.settings import POSTGRES_URL
 
 
 def create_async_engine(url: URL | str) -> AsyncEngine:
