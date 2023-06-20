@@ -39,13 +39,13 @@ services:
         restart: always
     nginx:
         container_name: "nginx"
-        image: nginx:alpine
+        build:
+            dockerfile: Dockerfile_nginx
         depends_on:
             - fast-api-app
         ports:
             - "80:80"
         volumes:
-            - ./nginx_conf:/etc/nginx/
             - static:/app/static
         restart: always
 
