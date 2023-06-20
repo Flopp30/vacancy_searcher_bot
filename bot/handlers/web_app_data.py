@@ -4,7 +4,7 @@ import json
 from aiogram import types
 
 from bot.handlers import profile_info, start
-from bot.settings import logger
+from bot.settings import bot_logger as logger
 from db.crud.profile import profile_crud
 from db.crud.base import grade_types_crud, work_types_crud
 

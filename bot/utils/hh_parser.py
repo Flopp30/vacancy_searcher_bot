@@ -10,7 +10,11 @@ import random
 
 import aiohttp
 
-from bot.settings import HEADERS, VACANCY_TO_SHOW_COUNT, logger
+from bot.settings import (
+    HEADERS,
+    VACANCY_TO_SHOW_COUNT,
+    bot_logger as logger
+)
 from bot.utils.data_extractor import extract_vacancies_info
 
 

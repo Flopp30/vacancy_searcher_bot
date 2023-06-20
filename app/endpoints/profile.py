@@ -5,8 +5,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from db import get_async_session, profile_crud, grade_types_crud, work_types_crud
 from db.schemas import ProfileForm
-from .validators import validate_salary
-
+from app.settings import app_logger
 
 router = APIRouter()
 templates = Jinja2Templates(directory='app/templates')
@@ -56,15 +55,17 @@ async def create_or_update_profile(
         if profile:
             await profile_crud.update(profile, data, session)
             content = "Профиль успешно обновлен"
+            app_logger.info(f"Updated profile for user : {user_id}")
         else:
             await profile_crud.create(data, session)
             content = "Профиль успешно создан"
+            app_logger.info(f"Created profile for user : {user_id}")
         status_code = 200
 
     except Exception as e:
+        app_logger.error(f"An error occurred while updating the profile with user id {user_id} -- {e}")
         content = f"Произошла ошибка во время обновления профиля: {e}"
         status_code = 500
 
-    response = JSONResponse(content)
-    response.status_code = status_code
+    response = JSONResponse(content=content, status_code=status_code)
     return response

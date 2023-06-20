@@ -2,15 +2,17 @@ version: '3.7'
 
 services:
     postgres_db:
+        container_name: "vacancy_postgres_db"
         image: postgres:14.5-alpine
-        restart: on-failure
         env_file:
             - .env.prod
         volumes:
             - postgres_data:/var/lib/postgresql/data
         ports:
             - "5432:5432"
+        restart: on-failure
     bot:
+        container_name: "vacancy_searcher_bot"
         build:
             dockerfile: Dockerfile_bot
         command: sh -c "make migrate && python3 -m bot"
@@ -21,17 +23,32 @@ services:
         volumes:
             - .:/bot
         restart: always
-    app:
+    fast-api-app:
+        container_name: "fast_api_vacancies"
         build:
             dockerfile: Dockerfile_app
         ports:
-            - 9999:8000
+            - "8000:8000"
         env_file:
             - .env.prod
         depends_on:
             - postgres_db
             - bot
+        volumes:
+            - static:/app/static
+        restart: always
+    nginx:
+        container_name: "nginx"
+        image: nginx:alpine
+        depends_on:
+            - fast-api-app
+        ports:
+            - "8000:80"
+        volumes:
+            - ./conf.d:/etc/nginx/conf.d
+            - static:/app/static
         restart: always
 
 volumes:
     postgres_data:
+    static:

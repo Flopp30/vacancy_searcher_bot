@@ -9,16 +9,14 @@ from dotenv import load_dotenv
 
 
 # logging
+bot_logger = logging.getLogger('telegram_bot')
+bot_logger.setLevel(logging.DEBUG)
 
-logger = logging.getLogger()
+bot_file_handler = logging.FileHandler('../bot.log')
+bot_formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-
-file_handler = logging.FileHandler('log.log')
-formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-
-logger.setLevel(logging.DEBUG)
-file_handler.setFormatter(formatter)
-logger.addHandler(file_handler)
+bot_file_handler.setFormatter(bot_formatter)
+bot_logger.addHandler(bot_file_handler)
 
 
 # Dirs
