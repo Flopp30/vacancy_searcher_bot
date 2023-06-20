@@ -1,5 +1,5 @@
 from urllib.parse import quote
-from bot.db import get_object_attrs, Profile
+from db import Profile
 from bot.utils.hh_parser import get_area_id_by_area_name
 
 
@@ -12,8 +12,12 @@ async def make_get_params_from_profile(profile: Profile) -> str:
         "is_deleted",
         "firstname",
         "lastname",
+        "email",
+        "work_type_id",
+        "grade_type_id",
+        "_sa_instance_state",
     ]
-    attrs_ = list(await get_object_attrs(Profile))
+    attrs_ = profile.__dict__
     get_params = ""
     for attr_ in attrs_:
         if attr_ not in unexpected_attrs:
@@ -22,8 +26,8 @@ async def make_get_params_from_profile(profile: Profile) -> str:
                 match attr_:
                     case "professional_role":
                         get_params += f"text={quote(value)}&"
-                    case "grade":
-                        match value:
+                    case "grade_type":
+                        match value.type:
                             case "trainee":
                                 get_params += "experience=noExperience&"
                             case "junior":
@@ -33,7 +37,7 @@ async def make_get_params_from_profile(profile: Profile) -> str:
                             case "senior":
                                 get_params += "experience=between3And6&moreThan6&"
                     case "work_type":
-                        match value:
+                        match value.type:
                             case "Полная занятость":
                                 get_params += "employment=full&"
                             case "Частичная занятость":

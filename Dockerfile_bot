@@ -4,4 +4,8 @@ COPY requirements.txt requirements.txt
 RUN pip3 install --upgrade setuptools
 RUN pip3 install -r requirements.txt
 RUN chmod 755 .
-COPY . .
+COPY bot ./bot
+COPY db ./db
+COPY alembic.ini ./alembic.ini
+COPY Makefile ./Makefile
+COPY .env.prod ./.env.prod

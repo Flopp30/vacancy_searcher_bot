@@ -55,6 +55,12 @@
    make migrate
    python3 -m bot
    ```
+#### FAST API app
+1) In project directory:
+   ```
+   uvicorn app.main:app --reload
+   ```
+2)  http://127.0.0.1:8000/profile/<profile_id>
 
 ## flake8 config:
 1) install flake8 in your environment
