@@ -36,15 +36,3 @@ from db.models.profile import (
 from db.models.user import (
     User,
 )
-
-
-from db.crud.unused_base import (
-    object_has_attr,
-    get_object_attrs,
-    get_object,
-    is_object_exist,
-    update_object,
-    delete_object
-)
-from db.crud.unused_profile import create_profile, get_profile_by_user_id
-from db.crud.unused_user import create_user
