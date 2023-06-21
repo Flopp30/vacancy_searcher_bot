@@ -1,0 +1,42 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  flake8:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11
+
+      - name: Install dependencies
+        run: pip install flake8
+
+      - name: Run Flake8
+        run: flake8 . --ignore=E402,F841,E302,E305,W503 --max-line-length=120 --statistics --show-source --extend-exclude=venv
+
+  deployment:
+    needs: flake8
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy to remote server
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.REMOTE_SERVER_HOST }}  # Замените на адрес вашего удаленного сервера
+          username: ${{ secrets.REMOTE_SERVER_USERNAME }}  # Замените на имя пользователя вашего удаленного сервера
+          password: ${{ secrets.REMOTE_SERVER_PASSWORD }}  # Замените на приватный SSH-ключ для подключения к серверу
+          script: |
+            cd ${{ secrets.COMPOSE_PATH }}
+            git pull
+            docker-compose up
