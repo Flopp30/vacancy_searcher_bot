@@ -43,3 +43,8 @@ jobs:
             echo "TG_BOT_KEY=${{ secrets.TG_BOT_KEY }} >> .env.prod"
             docker-compose pull
             docker-compose up -d
+        continue-on-error: true
+
+      - name: Rollback commit on error
+        if: steps.deployment.outcome != 'success'
+        run: git reset HEAD^
