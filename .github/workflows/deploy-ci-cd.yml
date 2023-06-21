@@ -40,11 +40,11 @@ jobs:
             cd ${{ secrets.COMPOSE_PATH }}
             git pull
             sed -i "s/localhost:5432/postgres_db:5432/" alembic.ini
-            echo "TG_BOT_KEY=${{ secrets.TG_BOT_KEY }} >> .env.prod"
+            echo "TG_BOT_KEY=${{ secrets.TG_BOT_KEY }}" >> .env.prod
             docker-compose pull
             docker-compose up -d
         continue-on-error: true
 
       - name: Rollback commit on error
         if: steps.deployment.outcome != 'success'
-        run: git reset HEAD^
+        run: git reset HEAD
