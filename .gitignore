@@ -4,4 +4,4 @@
 *log
 *venv
 .env.prod
-var/
+ssl/

@@ -1,4 +1,6 @@
 FROM nginx:1.19.0-alpine
 
 COPY ./default.conf /etc/nginx/conf.d/default.conf
-COPY ./var/ssl/* /etc/ssl/
+COPY ssl/flopp.crt /etc/ssl/flopp.crt
+COPY ssl/flopp.key /etc/ssl/flopp.key
+COPY ssl/ca.crt /etc/ssl/ca.crt
