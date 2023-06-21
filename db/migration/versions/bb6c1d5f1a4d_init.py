@@ -1,7 +1,7 @@
 """init
 
 Revision ID: bb6c1d5f1a4d
-Revises: 
+Revises:
 Create Date: 2023-06-21 01:34:10.756763
 
 """
