@@ -33,10 +33,11 @@ jobs:
       - name: Deploy to remote server
         uses: appleboy/ssh-action@master
         with:
-          host: ${{ secrets.REMOTE_SERVER_HOST }}  # Замените на адрес вашего удаленного сервера
-          username: ${{ secrets.REMOTE_SERVER_USERNAME }}  # Замените на имя пользователя вашего удаленного сервера
-          password: ${{ secrets.REMOTE_SERVER_PASSWORD }}  # Замените на приватный SSH-ключ для подключения к серверу
+          host: ${{ secrets.REMOTE_SERVER_HOST }} 
+          username: ${{ secrets.REMOTE_SERVER_USERNAME }}
+          password: ${{ secrets.REMOTE_SERVER_PASSWORD }}
           script: |
             cd ${{ secrets.COMPOSE_PATH }}
             git pull
-            docker-compose up
+            docker-compose pull
+            docker-compose up -d
