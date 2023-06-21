@@ -39,7 +39,7 @@ jobs:
           script: |
             cd ${{ secrets.COMPOSE_PATH }}
             git pull
-            sed -i 's/sqlalchemy\.url = postgresql\+asyncpg:\/\/admin:password@localhost:5432\/ja_bot/sqlalchemy\.url = postgresql\+asyncpg:\/\/admin:password@postgres_db:5432\/ja_bot/g' alembic.ini
-            echo "TG_BOT_KEY=${{ secrets.TG_BOT_KEY }}"
+            sed -i "s/localhost:5432/postgres_db:5432/" alembic.ini
+            echo "TG_BOT_KEY=${{ secrets.TG_BOT_KEY }} >> .env.prod"
             docker-compose pull
             docker-compose up -d
