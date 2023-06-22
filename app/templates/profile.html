@@ -20,7 +20,7 @@
         {% if profile %}Изменение профиля{% else %}Создание профиля{% endif%}
     </h2>
     <div id="messages-container" class="alert" role="alert"></div>
-    <form method="post" action="" id="edit-profile-form" class="mb-5">
+      <form method="post" action="{{url}}"  id="edit-profile-form" class="mb-5">
         <div class="form-group">
             <label for="professional_role">Название специальности</label>
             <input
