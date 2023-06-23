@@ -1,4 +1,4 @@
-name: Deploy
+name: lintering
 
 on:
   pull_request:
