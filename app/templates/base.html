@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+    <title>{% block title %}Мой сайт{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"/>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.4.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+    {% block css %}{% endblock %}
+    {% block script %}{% endblock %}
+</head>
+<body>
+<header>
+    {% block header %}
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <a class="navbar-brand" href="#">Vacancies</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Главная</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Главная</a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="#">Главная</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    {% endblock %}
+</header>
+
+<main>
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer class="bg-light py-4">
+    {% block footer %}
+        <div class="container text-center">
+            <p>&copy; 2023 Все права защищены.</p>
+        </div>
+    {% endblock %}
+
+</footer>
+</body>
+</html>

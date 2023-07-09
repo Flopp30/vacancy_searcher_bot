@@ -1,10 +1,10 @@
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 
-from bot.structure import ProfileCallback
+from bot.structure import ProfileCallback, ProfileCDAction
 
 builder = InlineKeyboardBuilder()
 builder.button(
-    text="Посмотреть вакансии", callback_data=ProfileCallback(action="search")
+    text="Посмотреть вакансии", callback_data=ProfileCallback(action=ProfileCDAction.SHOW_VACANCIES)
 )
 builder.adjust(1)
 

@@ -45,43 +45,6 @@ async def vacancy_search_by_callback(
         )
 
 
-async def vacancy_search(
-        message: types.Message,
-        state: FSMContext,
-        get_async_session,
-) -> types.Message:
-    """
-    search handler. Main
-    """
-    async with get_async_session() as session:
-        user_profile = await profile_crud.get_profile_by_attribute(
-            attr_name='user_id',
-            attr_value=message.from_user.id,
-            session=session,
-            is_deleted=False
-        )
-    if not user_profile:
-        return await message.answer("Для поиска вакансий тебе необходимо создать профиль")
-    get_params = await make_get_params_from_profile(user_profile)
-    vacancies = await get_data_from_hh(get_params=get_params, vacancy_count=VACANCY_TO_SHOW_COUNT)
-    if vacancies:
-        messages = await make_messages(vacancies)
-        text = messages[0] + TEXT_CURRENT_MESSAGE_PAGINATOR.format(
-            current_message=1,
-            len_messages=len(messages)
-        )
-        await state.update_data(messages=messages, current_message=0)
-
-        return await message.answer(
-            text=text,
-            reply_markup=PAGINATOR_BOARD
-        )
-    else:
-        return await message.answer(
-            text="Поиск не дал результата :("
-        )
-
-
 async def switch_message_page_callback(
         callback_query: types.CallbackQuery,
         callback_data: SearchCallBack,

@@ -11,6 +11,7 @@ services:
         ports:
             - "5432:5432"
         restart: on-failure
+
     bot:
         container_name: "vacancy_searcher_bot"
         build:
@@ -23,6 +24,7 @@ services:
         volumes:
             - .:/bot
         restart: always
+
     fast-api-app:
         container_name: "fast_api_vacancies"
         build:
@@ -37,6 +39,7 @@ services:
         volumes:
             - static:/app/static
         restart: always
+
     nginx:
         container_name: "nginx"
         build:
@@ -49,6 +52,7 @@ services:
         volumes:
             - static:/app/static
         restart: always
+
 
 volumes:
     postgres_data:
