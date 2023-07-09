@@ -38,6 +38,7 @@ jobs:
           password: ${{ secrets.REMOTE_SERVER_PASSWORD }}
           script: |
             cd ${{ secrets.COMPOSE_PATH }}
+            git reset --hard
             git pull
             sed -i "s/localhost:5432/postgres_db:5432/" alembic.ini
             sed -i "s/TG_BOT_KEY=set_key_here/TG_BOT_KEY=${{ secrets.TG_BOT_KEY }}/" .env.prod
